@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{881B05FD-C0B6-4205-9F3F-7CC2DDBE3684}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{A35A49F9-96E7-4AF5-9CFE-E68569A9C3F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForms", "WinForms\WinForms.csproj", "{A0788A15-DA18-4C57-AB6F-0D5B4AB5F0D3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{881B05FD-C0B6-4205-9F3F-7CC2DDBE3684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{881B05FD-C0B6-4205-9F3F-7CC2DDBE3684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{881B05FD-C0B6-4205-9F3F-7CC2DDBE3684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{881B05FD-C0B6-4205-9F3F-7CC2DDBE3684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A35A49F9-96E7-4AF5-9CFE-E68569A9C3F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A35A49F9-96E7-4AF5-9CFE-E68569A9C3F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A35A49F9-96E7-4AF5-9CFE-E68569A9C3F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A35A49F9-96E7-4AF5-9CFE-E68569A9C3F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0788A15-DA18-4C57-AB6F-0D5B4AB5F0D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0788A15-DA18-4C57-AB6F-0D5B4AB5F0D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0788A15-DA18-4C57-AB6F-0D5B4AB5F0D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0788A15-DA18-4C57-AB6F-0D5B4AB5F0D3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4370B5C5-7373-47A7-9C14-334D77E3921F}
+	EndGlobalSection
+EndGlobal
