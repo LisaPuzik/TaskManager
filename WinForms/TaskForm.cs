@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kanban.Model;
+using Model;
+using System;
 using System.Windows.Forms;
 using Task = Model.Task;
 
@@ -9,6 +11,7 @@ namespace WinForms
         public string TaskTitle => titleTextBox.Text;
         public string TaskDescription => descriptionTextBox.Text;
         public DateTime TaskDeadLine => deadlinePicker.Value;
+        public Priority TaskPriority => (Priority)priorityComboBox.SelectedItem;
 
         /// <summary>
         /// Конструктор для создания новой задачи (пустая форма).
@@ -16,6 +19,7 @@ namespace WinForms
         public TaskForm()
         {
             InitializeComponent();
+            priorityComboBox.DataSource = Enum.GetValues(typeof(Priority));
         }
 
         /// <summary>
@@ -25,9 +29,11 @@ namespace WinForms
         public TaskForm(Task taskToEdit)
         {
             InitializeComponent();
+            priorityComboBox.DataSource = Enum.GetValues(typeof(Priority));
             titleTextBox.Text = taskToEdit.Title;
             descriptionTextBox.Text = taskToEdit.Description;
             deadlinePicker.Value = taskToEdit.DeadLine;
+            priorityComboBox.SelectedItem = taskToEdit.Priority;
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -49,6 +55,11 @@ namespace WinForms
         }
 
         private void TaskForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
         {
 
         }

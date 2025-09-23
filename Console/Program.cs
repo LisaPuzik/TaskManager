@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Kanban.Model;
+using Model;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -91,7 +92,8 @@ namespace Kanban.ConsoleUI
 
                 foreach (var task in group)
                 {
-                    Console.WriteLine($"[{task.Id}] {task.Title} (до {task.DeadLine:dd.MM.yyyy})");
+                    string priorityMarker = task.Priority == Priority.High ? "[!!!]" : (task.Priority == Priority.Medium ? "[!!]" : "[!]");
+                    Console.WriteLine($"{priorityMarker} [{task.Id}] {task.Title} (до {task.DeadLine:dd.MM.yyyy})");
                     Console.WriteLine($"\tОписание: {task.Description}");
                 }
                 Console.WriteLine();
@@ -122,8 +124,8 @@ namespace Kanban.ConsoleUI
                 }
                 Console.WriteLine("Неверный формат даты. Попробуйте еще раз.");
             }
-
-            logic.AddTask(title, description, deadLine);
+            Priority priority = AskForPriority();
+            logic.AddTask(title, description, deadLine, priority);
             Console.WriteLine("Задача успешно добавлена!");
         }
 
@@ -174,8 +176,8 @@ namespace Kanban.ConsoleUI
                 }
                 Console.WriteLine("Неверный формат даты.");
             }
-
-            logic.UpdateTask(id, newTitle, newDescription, newDeadLine);
+            Priority newPriority = AskForPriority(task.Priority);
+            logic.UpdateTask(id, newTitle, newDescription, newDeadLine, newPriority);
             Console.WriteLine("Задача успешно обновлена!");
         }
 
@@ -240,6 +242,31 @@ namespace Kanban.ConsoleUI
 
             logic.ChangeTaskStatus(id, (TaskStatus)statusInt);
             Console.WriteLine("Статус задачи успешно изменен!");
+        }
+
+        /// <summary>
+        /// Запрашивает у пользователя выбор приоритета.
+        /// </summary>
+        private static Priority AskForPriority(Priority? current = null)
+        {
+            Console.WriteLine($"Выберите приоритет (текущий: {current?.ToString() ?? "не задан"}):");
+            Console.WriteLine($"{(int)Priority.Low} - {Priority.Low}");
+            Console.WriteLine($"{(int)Priority.Medium} - {Priority.Medium}");
+            Console.WriteLine($"{(int)Priority.High} - {Priority.High}");
+
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input) && current.HasValue)
+                {
+                    return current.Value;
+                }
+                if (int.TryParse(input, out int priorityInt) && Enum.IsDefined(typeof(Priority), priorityInt))
+                {
+                    return (Priority)priorityInt;
+                }
+                Console.WriteLine("Неверный ввод. Попробуйте еще раз.");
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kanban.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,8 @@ namespace Model
         /// <param name="title">Заголовок задачи.</param>
         /// <param name="description">Описание задачи.</param>
         /// <param name="deadLine">Срок выполнения задачи.</param>
-        public void AddTask(string title, string description, DateTime deadLine)
+        /// <param name="priority">Приоритетность задачи</param>
+        public void AddTask(string title, string description, DateTime deadLine, Priority priority)
         {
             var task = new Task
             {
@@ -43,7 +45,8 @@ namespace Model
                 Title = title,
                 Description = description,
                 DeadLine = deadLine,
-                Status = TaskStatus.ToDo
+                Status = TaskStatus.ToDo,
+                Priority = priority
             };
             _tasks.Add(task);
             Save();
@@ -56,7 +59,8 @@ namespace Model
         /// <param name="title">Новый заголовок.</param>
         /// <param name="description">Новое описание.</param>
         /// <param name="deadLine">Новый срок выполнения.</param>
-        public void UpdateTask(Guid id, string title, string description, DateTime deadLine)
+        /// <param name="priority">Новая приоритетность задачи.</param>
+        public void UpdateTask(Guid id, string title, string description, DateTime deadLine, Priority priority)
         {
             var task = GetTaskById(id);
             if (task != null)
@@ -64,6 +68,7 @@ namespace Model
                 task.Title = title;
                 task.Description = description;
                 task.DeadLine = deadLine;
+                task.Priority = priority;
                 Save();
             }
         }

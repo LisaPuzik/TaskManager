@@ -41,3 +41,4 @@ C:\Users\liza5\source\repos\KanbanApp-main\WinForms\obj\Debug\net8.0-windows\ref
 C:\Users\liza5\source\repos\KanbanApp-main\WinForms\obj\Debug\net8.0-windows\WinForms.pdb
 C:\Users\liza5\source\repos\KanbanApp-main\WinForms\obj\Debug\net8.0-windows\WinForms.genruntimeconfig.cache
 C:\Users\liza5\source\repos\KanbanApp-main\WinForms\obj\Debug\net8.0-windows\ref\WinForms.dll
+C:\Users\liza5\source\repos\KanbanApp-main\WinForms\obj\Debug\net8.0-windows\WinForms.sourcelink.json

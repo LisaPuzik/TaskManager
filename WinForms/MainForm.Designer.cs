@@ -109,41 +109,50 @@
             // 
             toDoListBox.AllowDrop = true;
             toDoListBox.Dock = DockStyle.Fill;
+            toDoListBox.DrawMode = DrawMode.OwnerDrawFixed;
             toDoListBox.FormattingEnabled = true;
             toDoListBox.Location = new Point(3, 44);
             toDoListBox.Name = "toDoListBox";
             toDoListBox.Size = new Size(270, 401);
             toDoListBox.TabIndex = 0;
+            toDoListBox.DrawItem += listBox_DrawItem;
             toDoListBox.SelectedIndexChanged += toDoListBox_SelectedIndexChanged;
             toDoListBox.DragDrop += listBox_DragDrop;
             toDoListBox.DragEnter += listBox_DragEnter;
             toDoListBox.MouseDown += listBox_MouseDown;
+            toDoListBox.MouseMove += listBox_MouseMove;
             // 
             // inProgressListBox
             // 
             inProgressListBox.AllowDrop = true;
             inProgressListBox.Dock = DockStyle.Fill;
+            inProgressListBox.DrawMode = DrawMode.OwnerDrawFixed;
             inProgressListBox.FormattingEnabled = true;
             inProgressListBox.Location = new Point(279, 44);
             inProgressListBox.Name = "inProgressListBox";
             inProgressListBox.Size = new Size(271, 401);
             inProgressListBox.TabIndex = 1;
+            inProgressListBox.DrawItem += listBox_DrawItem;
             inProgressListBox.DragDrop += listBox_DragDrop;
             inProgressListBox.DragEnter += listBox_DragEnter;
             inProgressListBox.MouseDown += listBox_MouseDown;
+            inProgressListBox.MouseMove += listBox_MouseMove;
             // 
             // doneListBox
             // 
             doneListBox.AllowDrop = true;
             doneListBox.Dock = DockStyle.Fill;
+            doneListBox.DrawMode = DrawMode.OwnerDrawFixed;
             doneListBox.FormattingEnabled = true;
             doneListBox.Location = new Point(556, 44);
             doneListBox.Name = "doneListBox";
             doneListBox.Size = new Size(272, 401);
             doneListBox.TabIndex = 2;
+            doneListBox.DrawItem += listBox_DrawItem;
             doneListBox.DragDrop += listBox_DragDrop;
             doneListBox.DragEnter += listBox_DragEnter;
             doneListBox.MouseDown += listBox_MouseDown;
+            doneListBox.MouseMove += listBox_MouseMove;
             // 
             // label1
             // 

@@ -21,3 +21,4 @@ C:\Users\liza5\source\repos\KanbanApp-main\Model\obj\Debug\net8.0\Model.dll
 C:\Users\liza5\source\repos\KanbanApp-main\Model\obj\Debug\net8.0\refint\Model.dll
 C:\Users\liza5\source\repos\KanbanApp-main\Model\obj\Debug\net8.0\Model.pdb
 C:\Users\liza5\source\repos\KanbanApp-main\Model\obj\Debug\net8.0\ref\Model.dll
+C:\Users\liza5\source\repos\KanbanApp-main\Model\obj\Debug\net8.0\Model.sourcelink.json

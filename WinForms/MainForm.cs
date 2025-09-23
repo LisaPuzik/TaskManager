@@ -1,3 +1,4 @@
+using Kanban.Model;
 using Model;
 using System;
 using System.Data;
@@ -62,7 +63,7 @@ namespace WinForms
             {
                 if (taskForm.ShowDialog() == DialogResult.OK)
                 {
-                    logic.AddTask(taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine);
+                    logic.AddTask(taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine, taskForm.TaskPriority);
                     RefreshBoard();
                 }
             }
@@ -84,7 +85,7 @@ namespace WinForms
                     {
                         if (taskForm.ShowDialog() == DialogResult.OK)
                         {
-                            logic.UpdateTask(taskToEdit.Id, taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine);
+                            logic.UpdateTask(taskToEdit.Id, taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine, taskForm.TaskPriority);
                             RefreshBoard();
                         }
                     }
@@ -151,14 +152,17 @@ namespace WinForms
         }
 
         /// <summary>
-        /// Начинает операцию перетаскивания, когда пользователь зажимает кнопку мыши на задаче.
+        /// Срабатывает при нажатии кнопки мыши.
+        /// Теперь он просто выбирает элемент под курсором и "запоминает" его для возможного перетаскивания.
         /// </summary>
         private void listBox_MouseDown(object sender, MouseEventArgs e)
         {
             ListBox sourceListBox = sender as ListBox;
-            if (sourceListBox.SelectedItem == null) return;
-
-            sourceListBox.DoDragDrop(sourceListBox.SelectedItem, DragDropEffects.Move);
+            int index = sourceListBox.IndexFromPoint(e.Location);
+            if (index != ListBox.NoMatches)
+            {
+                sourceListBox.SelectedItem = sourceListBox.Items[index];
+            }
         }
 
         /// <summary>
@@ -212,6 +216,61 @@ namespace WinForms
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Срабатывает при движении мыши над списком.
+        /// Если левая кнопка зажата и есть выбранный элемент, НАЧИНАЕТ перетаскивание.
+        /// </summary>
+        private void listBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && (sender as ListBox).SelectedItem != null)
+            {
+                ListBox sourceListBox = sender as ListBox;
+                sourceListBox.DoDragDrop(sourceListBox.SelectedItem, DragDropEffects.Move);
+            }
+        }
+
+        private void listBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+
+            ListBox listBox = sender as ListBox;
+            TaskDisplayItem item = listBox.Items[e.Index] as TaskDisplayItem;
+            Task task = logic.GetTaskById(item.Id);
+
+            bool isSelected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
+
+            Color backgroundColor = Color.White;
+            if (task.Priority == Priority.High)
+            {
+                backgroundColor = Color.LightCoral;
+            }
+            else if (task.Priority == Priority.Medium)
+            {
+                backgroundColor = Color.LightYellow;
+            }
+
+            Color finalBackgroundColor = isSelected ? SystemColors.Highlight : backgroundColor;
+
+
+            e.Graphics.FillRectangle(new SolidBrush(finalBackgroundColor), e.Bounds);
+
+            Brush textColor = isSelected ? Brushes.White : Brushes.Black;
+
+            if (task.DeadLine.Date < DateTime.Now.Date && task.Status != TaskStatus.Done)
+            {
+                textColor = Brushes.DarkRed;
+            }
+
+            e.Graphics.DrawString(
+                item.Title,
+                e.Font,
+                textColor,
+                e.Bounds,
+                StringFormat.GenericDefault
+            );
+            e.DrawFocusRectangle();
         }
     }
 }

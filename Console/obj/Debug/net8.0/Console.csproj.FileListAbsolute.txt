@@ -35,3 +35,4 @@ C:\Users\liza5\source\repos\KanbanApp-main\Console\obj\Debug\net8.0\refint\Conso
 C:\Users\liza5\source\repos\KanbanApp-main\Console\obj\Debug\net8.0\Console.pdb
 C:\Users\liza5\source\repos\KanbanApp-main\Console\obj\Debug\net8.0\Console.genruntimeconfig.cache
 C:\Users\liza5\source\repos\KanbanApp-main\Console\obj\Debug\net8.0\ref\Console.dll
+C:\Users\liza5\source\repos\KanbanApp-main\Console\obj\Debug\net8.0\Console.sourcelink.json
