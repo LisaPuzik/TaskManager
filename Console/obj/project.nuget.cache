@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ARigWu//qLk=",
+  "dgSpecHash": "gb+DkinFAlQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\liza5\\source\\repos\\TaskMahager\\Console\\Console.csproj",
+  "projectFilePath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Console\\Console.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\liza5\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\liza5\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

@@ -28,11 +28,11 @@ namespace Kanban.BL
         {
             if (type == RepositoryType.EF)
             {
-                _repository = new EntityRepository<Task>();
+                _repository = new EntityRepository();
             }
             else
             {
-                _repository = new DapperRepository<Task>();
+                _repository = new DapperRepository();
             }
         }
 

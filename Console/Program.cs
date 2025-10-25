@@ -10,7 +10,7 @@ namespace Kanban.ConsoleUI
 {
     class Program
     {
-        private static readonly Logic logic = new Logic (RepositoryType.Dapper);
+        private static readonly Logic logic = new Logic (RepositoryType.EF);
 
         static void Main(string[] args)
         {

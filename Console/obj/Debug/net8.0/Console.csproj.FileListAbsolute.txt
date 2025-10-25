@@ -349,3 +349,4 @@ C:\Users\liza5\source\repos\TaskMahager\Console\bin\Debug\net8.0\Kanban.Entities
 C:\Users\liza5\source\repos\TaskMahager\Console\bin\Debug\net8.0\Kanban.BL.pdb
 C:\Users\liza5\source\repos\TaskMahager\Console\bin\Debug\net8.0\DataAccessLayer.pdb
 C:\Users\liza5\source\repos\TaskMahager\Console\bin\Debug\net8.0\Kanban.Entities.pdb
+C:\Users\liza5\source\repos\taskMahager\Console\obj\Debug\net8.0\Console.sourcelink.json

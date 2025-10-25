@@ -5,22 +5,23 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Task = Kanban.Entities.Task;
 
 namespace DataAccessLayer
 {
     /// <summary>
     /// Класс, обрабатывающий сценарий работу с Dapperом
     /// </summary>
-    public class DapperRepository<T> : IRepository<T> where T : IDomainObject
+    public class DapperRepository : IRepository <Task> 
     {
         private readonly string _connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=KanbanDB_V2;Trusted_Connection=True;";
 
-        private readonly string _tableName = typeof(T).Name + "s";
+        private readonly string _tableName = typeof(Task).Name + "s";
 
         /// <summary>
         /// Добавляет новую таску в базу данных.
         /// </summary>
-        public void Add(T entity)
+        public void Add(Task entity)
         {
             var sql = $"INSERT INTO {_tableName} (Id, Title, Description, DeadLine, Status, Priority) VALUES (@Id, @Title, @Description, @DeadLine, @Status, @Priority);";
 
@@ -48,13 +49,13 @@ namespace DataAccessLayer
         /// Получает все таски из базы данных.
         /// </summary>
         /// <returns>Коллекция всех тасок</returns>
-        public IEnumerable<T> GetAll()
+        public IEnumerable<Task> GetAll()
         {
             var sql = $"SELECT * FROM {_tableName};";
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                return connection.Query<T>(sql).ToList();
+                return connection.Query<Task>(sql).ToList();
             }
         }
 
@@ -63,13 +64,13 @@ namespace DataAccessLayer
         /// </summary>
         /// <param name="id">Идентификатор</param>
         /// <returns>Найденная таска или null, если она не найдена</returns>
-        public T GetById(Guid id)
+        public Task GetById(Guid id)
         {
             var sql = $"SELECT * FROM {_tableName} WHERE Id = @Id;";
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                return connection.QueryFirstOrDefault<T>(sql, new { Id = id });
+                return connection.QueryFirstOrDefault<Task>(sql, new { Id = id });
             }
         }
 
@@ -77,7 +78,7 @@ namespace DataAccessLayer
         /// Обновляет существующую таску в базе данных.
         /// </summary>
         /// <param name="entity">Таска с обновленными данными.</param>
-        public void Update(T entity)
+        public void Update(Task entity)
         {
             var sql = $"UPDATE {_tableName} SET Title = @Title, Description = @Description, DeadLine = @DeadLine, Status = @Status WHERE Id = @Id;";
 

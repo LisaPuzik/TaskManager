@@ -14,7 +14,7 @@ namespace DataAccessLayer
     /// </summary>
     public class KanbanDbContext : DbContext
     {
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet <Task> Tasks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

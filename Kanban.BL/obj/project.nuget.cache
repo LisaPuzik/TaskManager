@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NQAw99X0mlg=",
+  "dgSpecHash": "dQy+bnyS5Cg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\liza5\\source\\repos\\TaskMahager\\Kanban.BL\\Kanban.BL.csproj",
+  "projectFilePath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.BL\\Kanban.BL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\liza5\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\liza5\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

@@ -32,3 +32,4 @@ C:\Users\liza5\source\repos\TaskMahager\DataAccessLayer\obj\Debug\net8.0\refint\
 C:\Users\liza5\source\repos\TaskMahager\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.pdb
 C:\Users\liza5\source\repos\TaskMahager\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.genruntimeconfig.cache
 C:\Users\liza5\source\repos\TaskMahager\DataAccessLayer\obj\Debug\net8.0\ref\DataAccessLayer.dll
+C:\Users\liza5\source\repos\taskMahager\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.sourcelink.json

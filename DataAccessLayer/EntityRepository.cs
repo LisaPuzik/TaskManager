@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Task = Kanban.Entities.Task;
 
 namespace DataAccessLayer
 {
     /// <summary>
     /// Класс, обрабатывающий сценарий работу с EF
     /// </summary>
-    public class EntityRepository<T> : IRepository<T> where T : class, IDomainObject
+    public class EntityRepository : IRepository<Task>
     {
         private readonly KanbanDbContext _context;
 
@@ -22,9 +23,9 @@ namespace DataAccessLayer
         /// <summary>
         /// Добавляет новую таску в базу данных.
         /// </summary>
-        public void Add(T entity)
+        public void Add(Task entity)
         {
-            _context.Set<T>().Add(entity);
+            _context.Tasks.Add(entity);
             _context.SaveChanges();
         }
 
@@ -37,7 +38,7 @@ namespace DataAccessLayer
             var entity = GetById(id);
             if (entity != null)
             {
-                _context.Set<T>().Remove(entity);
+                _context.Tasks.Remove(entity);
                 _context.SaveChanges();
             }
         }
@@ -46,9 +47,9 @@ namespace DataAccessLayer
         /// Получает все таски из базы данных.
         /// </summary>
         /// <returns>Коллекция всех тасок</returns>
-        public IEnumerable<T> GetAll()
+        public IEnumerable<Task> GetAll()
         {
-            return _context.Set<T>().ToList();
+            return _context.Tasks.ToList();
         }
 
         /// <summary>
@@ -56,16 +57,16 @@ namespace DataAccessLayer
         /// </summary>
         /// <param name="id">Идентификатор</param>
         /// <returns>Найденная таска или null, если она не найдена</returns>
-        public T GetById(Guid id)
+        public Task GetById(Guid id)
         {
-            return _context.Set<T>().FirstOrDefault(e => e.Id == id);
+            return _context.Tasks.FirstOrDefault(e => e.Id == id);
         }
 
         /// <summary>
         /// Обновляет существующую таску в базе данных.
         /// </summary>
         /// <param name="entity">Таска с обновленными данными.</param>
-        public void Update(T entity)
+        public void Update(Task entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
