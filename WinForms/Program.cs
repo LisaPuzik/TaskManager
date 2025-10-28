@@ -1,3 +1,8 @@
+using Ninject;
+using Kanban.BL;
+using System;
+using System.Windows.Forms;
+
 namespace WinForms
 {
     internal static class Program
@@ -5,9 +10,13 @@ namespace WinForms
         [STAThread]
         static void Main()
         {
-            https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+            IKernel kernel = new StandardKernel(new SimpleConfigModule());
+            Logic logic = kernel.Get<Logic>();
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            Application.Run(new MainForm(logic));
         }
     }
 }

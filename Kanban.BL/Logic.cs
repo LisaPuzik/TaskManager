@@ -8,43 +8,33 @@ using TaskStatus = Kanban.Entities.TaskStatus;
 
 namespace Kanban.BL
 {
-    /// <summary>
-    /// Перечисление для выбора типа репозитория при инициализации Logic
-    /// </summary>
-    public enum RepositoryType
-    {
-        EF,
-        Dapper
-    }
 
     /// <summary>
     /// Класс бизнес-логики. Только управляет операциями над сущностями.
     /// </summary>
     public class Logic
     {
-        private readonly IRepository<Task> _repository;
+        public IRepository<Task> Repository { get; set; }
 
-        public Logic(RepositoryType type)
+        public Logic(IRepository<Task> repository)
         {
-            if (type == RepositoryType.EF)
+            if (repository == null)
             {
-                _repository = new EntityRepository();
+                throw new ArgumentNullException(nameof(repository),
+                    "Ошибка: В конструктор класса Logic не был передан репозиторий.");
             }
-            else
-            {
-                _repository = new DapperRepository();
-            }
+            this.Repository = repository;
         }
 
 
         public List<Task> GetAllTasks()
         {
-            return _repository.GetAll().ToList();
+            return Repository.GetAll().ToList();
         }
 
         public Task GetTaskById(Guid id)
         {
-            return _repository.GetById(id);
+            return Repository.GetById(id);
         }
 
         public void AddTask(string title, string description, DateTime dueDate, Priority priority)
@@ -59,12 +49,12 @@ namespace Kanban.BL
                 Status = TaskStatus.ToDo 
             };
 
-            _repository.Add(task);
+            Repository.Add(task);
         }
 
         public void DeleteTask(Guid id)
         {
-            _repository.Delete(id);
+            Repository.Delete(id);
         }
 
         /// <summary>
@@ -72,7 +62,7 @@ namespace Kanban.BL
         /// </summary>
         public void UpdateTask(Guid id, string title, string description, DateTime dueDate, Priority priority)
         {
-            var task = _repository.GetById(id);
+            var task = Repository.GetById(id);
 
             if (task != null)
             {
@@ -81,7 +71,7 @@ namespace Kanban.BL
                 task.DeadLine = dueDate;
                 task.Priority = priority;
 
-                _repository.Update(task);
+                Repository.Update(task);
             }
         }
 
@@ -90,12 +80,12 @@ namespace Kanban.BL
         /// </summary>
         public void ChangeTaskStatus(Guid id, TaskStatus newStatus)
         {
-            var task = _repository.GetById(id);
+            var task = Repository.GetById(id);
 
             if (task != null)
             {
                 task.Status = newStatus;
-                _repository.Update(task);
+                Repository.Update(task);
             }
         }
     }

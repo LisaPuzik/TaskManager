@@ -1,8 +1,10 @@
 ﻿using Kanban.BL;
 using Kanban.Entities;
+using Ninject;
 using System;
 using System.Globalization;
 using System.Linq;
+using Ninject;
 using Task = Kanban.Entities.Task;
 using TaskStatus = Kanban.Entities.TaskStatus;
 
@@ -10,10 +12,13 @@ namespace Kanban.ConsoleUI
 {
     class Program
     {
-        private static readonly Logic logic = new Logic (RepositoryType.EF);
+        private static Logic logic;
 
         static void Main(string[] args)
         {
+            IKernel kernel = new StandardKernel(new SimpleConfigModule());
+            logic = kernel.Get<Logic>();
+
             while (true)
             {
                 Console.Clear();

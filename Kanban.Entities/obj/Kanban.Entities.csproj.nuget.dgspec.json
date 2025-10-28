@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj": {}
+    "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj": {}
   },
   "projects": {
-    "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj": {
+    "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj",
+        "projectUniqueName": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj",
         "projectName": "Kanban.Entities",
-        "projectPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj",
+        "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj",
         "packagesPath": "C:\\Users\\liza5\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\liza5\\source\\repos\\TaskMahager\\Kanban.Entities\\obj\\",
+        "outputPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

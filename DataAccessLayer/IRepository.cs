@@ -8,40 +8,46 @@ using System.Threading.Tasks;
 namespace DataAccessLayer
 {
     /// <summary>
-    /// Интерфейс, обеспечивающий основные CRUD операции
+    /// Определяет контракт для чтения сущностей из хранилища.
     /// </summary>
-    public interface IRepository<T> where T : IDomainObject
+    public interface IReadRepository<T> where T : IDomainObject
     {
         /// <summary>
-        /// Добавляет новую таску в базу данных.
+        /// Получает сущность по ее уникальному идентификатору.
+        /// </summary>
+        T GetById(Guid id);
+
+        /// <summary>
+        /// Получает все сущности данного типа из хранилища.
+        /// </summary>
+        IEnumerable<T> GetAll();
+    }
+
+    /// <summary>
+    /// Определяет контракт для записи/изменения сущностей в хранилище.
+    /// </summary>
+    public interface IWriteRepository<T> where T : IDomainObject
+    {
+        /// <summary>
+        /// Сохраняет новую сущность в хранилище.
         /// </summary>
         void Add(T entity);
 
         /// <summary>
-        /// Обновляет существующую таску в базе данных.
+        /// Обновляет существующую сущность в хранилище.
         /// </summary>
-        /// <param name="entity">Таска с обновленными данными.</param>
         void Update(T entity);
 
         /// <summary>
-        /// Удаляет таску из базы данных по ее идентификатору.
+        /// Удаляет сущность из хранилища по ее идентификатору.
         /// </summary>
-        /// <param name="id">Идентификатор таски для удаления.</param>
         void Delete(Guid id);
+    }
 
-
-        /// <summary>
-        /// Получает таску по ее уникальному идентификатору.
-        /// </summary>
-        /// <param name="id">Идентификатор</param>
-        /// <returns>Найденная таска или null, если она не найдена</returns>
-        T GetById(Guid id);
-
-
-        /// <summary>
-        /// Получает все таски из базы данных.
-        /// </summary>
-        /// <returns>Коллекция всех тасок</returns>
-        IEnumerable<T> GetAll();
+    /// <summary>
+    /// Объединяет контракты чтения и записи для реализации полного CRUD-репозитория.
+    /// </summary>
+    public interface IRepository<T> : IReadRepository<T>, IWriteRepository<T> where T : IDomainObject
+    {
     }
 }

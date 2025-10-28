@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\liza5\\source\\repos\\taskMahager\\WinForms\\WinForms.csproj": {}
+    "C:\\Users\\liza5\\AISLAB3\\TaskManager\\WinForms\\WinForms.csproj": {}
   },
   "projects": {
-    "C:\\Users\\liza5\\source\\repos\\taskMahager\\DataAccessLayer\\DataAccessLayer.csproj": {
+    "C:\\Users\\liza5\\AISLAB3\\TaskManager\\DataAccessLayer\\DataAccessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\liza5\\source\\repos\\taskMahager\\DataAccessLayer\\DataAccessLayer.csproj",
+        "projectUniqueName": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\DataAccessLayer\\DataAccessLayer.csproj",
         "projectName": "DataAccessLayer",
-        "projectPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\DataAccessLayer\\DataAccessLayer.csproj",
+        "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\DataAccessLayer\\DataAccessLayer.csproj",
         "packagesPath": "C:\\Users\\liza5\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\DataAccessLayer\\obj\\",
+        "outputPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\DataAccessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj": {
-                "projectPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj"
+              "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj": {
+                "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj"
               }
             }
           }
@@ -93,14 +93,14 @@
         }
       }
     },
-    "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.BL\\Kanban.BL.csproj": {
+    "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.BL\\Kanban.BL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.BL\\Kanban.BL.csproj",
+        "projectUniqueName": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.BL\\Kanban.BL.csproj",
         "projectName": "Kanban.BL",
-        "projectPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.BL\\Kanban.BL.csproj",
+        "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.BL\\Kanban.BL.csproj",
         "packagesPath": "C:\\Users\\liza5\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.BL\\obj\\",
+        "outputPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.BL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -121,11 +121,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\liza5\\source\\repos\\taskMahager\\DataAccessLayer\\DataAccessLayer.csproj": {
-                "projectPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\DataAccessLayer\\DataAccessLayer.csproj"
+              "C:\\Users\\liza5\\AISLAB3\\TaskManager\\DataAccessLayer\\DataAccessLayer.csproj": {
+                "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\DataAccessLayer\\DataAccessLayer.csproj"
               },
-              "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj": {
-                "projectPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj"
+              "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj": {
+                "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj"
               }
             }
           }
@@ -145,6 +145,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Ninject": {
+              "target": "Package",
+              "version": "[3.3.6, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -165,14 +171,14 @@
         }
       }
     },
-    "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj": {
+    "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj",
+        "projectUniqueName": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj",
         "projectName": "Kanban.Entities",
-        "projectPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.Entities\\Kanban.Entities.csproj",
+        "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj",
         "packagesPath": "C:\\Users\\liza5\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\liza5\\source\\repos\\TaskMahager\\Kanban.Entities\\obj\\",
+        "outputPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -230,14 +236,14 @@
         }
       }
     },
-    "C:\\Users\\liza5\\source\\repos\\taskMahager\\WinForms\\WinForms.csproj": {
+    "C:\\Users\\liza5\\AISLAB3\\TaskManager\\WinForms\\WinForms.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\liza5\\source\\repos\\taskMahager\\WinForms\\WinForms.csproj",
+        "projectUniqueName": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\WinForms\\WinForms.csproj",
         "projectName": "WinForms",
-        "projectPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\WinForms\\WinForms.csproj",
+        "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\WinForms\\WinForms.csproj",
         "packagesPath": "C:\\Users\\liza5\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\WinForms\\obj\\",
+        "outputPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\WinForms\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -258,8 +264,8 @@
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.BL\\Kanban.BL.csproj": {
-                "projectPath": "C:\\Users\\liza5\\source\\repos\\taskMahager\\Kanban.BL\\Kanban.BL.csproj"
+              "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.BL\\Kanban.BL.csproj": {
+                "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.BL\\Kanban.BL.csproj"
               }
             }
           }
@@ -279,6 +285,12 @@
       "frameworks": {
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
+          "dependencies": {
+            "Ninject": {
+              "target": "Package",
+              "version": "[3.3.6, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

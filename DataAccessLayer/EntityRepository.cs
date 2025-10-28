@@ -17,22 +17,15 @@ namespace DataAccessLayer
 
         public EntityRepository()
         {
-            _context = new KanbanDbContext();
+             _context = new KanbanDbContext();
         }
 
-        /// <summary>
-        /// Добавляет новую таску в базу данных.
-        /// </summary>
         public void Add(Task entity)
         {
             _context.Tasks.Add(entity);
             _context.SaveChanges();
         }
 
-        /// <summary>
-        /// Удаляет таску из базы данных по ее идентификатору.
-        /// </summary>
-        /// <param name="id">Идентификатор таски для удаления.</param>
         public void Delete(Guid id)
         {
             var entity = GetById(id);
@@ -43,29 +36,16 @@ namespace DataAccessLayer
             }
         }
 
-        /// <summary>
-        /// Получает все таски из базы данных.
-        /// </summary>
-        /// <returns>Коллекция всех тасок</returns>
         public IEnumerable<Task> GetAll()
         {
             return _context.Tasks.ToList();
         }
 
-        /// <summary>
-        /// Получает таску по ее уникальному идентификатору.
-        /// </summary>
-        /// <param name="id">Идентификатор</param>
-        /// <returns>Найденная таска или null, если она не найдена</returns>
         public Task GetById(Guid id)
         {
             return _context.Tasks.FirstOrDefault(e => e.Id == id);
         }
 
-        /// <summary>
-        /// Обновляет существующую таску в базе данных.
-        /// </summary>
-        /// <param name="entity">Таска с обновленными данными.</param>
         public void Update(Task entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
