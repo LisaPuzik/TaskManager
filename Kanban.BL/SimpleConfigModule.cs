@@ -16,6 +16,10 @@ namespace Kanban.BL
         public override void Load()
         {
             Bind<IRepository<Task>>().To<DapperRepository>().InSingletonScope();
+
+            Bind<ILogicCrud>().To<LogicCrud>();
+            Bind<ILogicBL>().To<LogicBL>();
+            Bind<ILogicAll>().To<LogicAll>();
         }
     }
 }

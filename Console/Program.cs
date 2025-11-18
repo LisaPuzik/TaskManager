@@ -7,17 +7,18 @@ using System.Linq;
 using Ninject;
 using Task = Kanban.Entities.Task;
 using TaskStatus = Kanban.Entities.TaskStatus;
+using Microsoft.Identity.Client;
 
 namespace Kanban.ConsoleUI
 {
     class Program
     {
-        private static Logic logic;
-
+        private static ILogicAll logic;
         static void Main(string[] args)
         {
             IKernel kernel = new StandardKernel(new SimpleConfigModule());
-            logic = kernel.Get<Logic>();
+
+            logic = kernel.Get<ILogicAll>();
 
             while (true)
             {
@@ -28,7 +29,8 @@ namespace Kanban.ConsoleUI
                 Console.WriteLine("3. Редактировать задачу");
                 Console.WriteLine("4. Удалить задачу");
                 Console.WriteLine("5. Изменить статус задачи");
-                Console.WriteLine("6. Выход");
+                Console.WriteLine("6. Изменить приоритетность задачи");
+                Console.WriteLine("7. Выход");
                 Console.Write("Выберите действие: ");
 
                 string choice = Console.ReadLine();
@@ -51,6 +53,9 @@ namespace Kanban.ConsoleUI
                         ChangeTaskStatus();
                         break;
                     case "6":
+                        ChangeTaskPriority();
+                        break;
+                    case "7":
                         Console.WriteLine("До свидания!");
                         return;
                     default:
@@ -246,6 +251,47 @@ namespace Kanban.ConsoleUI
 
             logic.ChangeTaskStatus(id, (TaskStatus)statusInt);
             Console.WriteLine("Статус задачи успешно изменен!");
+        }
+
+        /// <summary>
+        /// Запрашивает ID задачи и новый приоритет для нее.
+        /// </summary>
+        private static void ChangeTaskPriority()
+        {
+            Console.Clear();
+            Console.WriteLine("--- Изменение приоритета задачи ---");
+            ShowAllTasks();
+            Console.Write("\nВведите ID задачи для изменения приоритета: ");
+
+            if (!Guid.TryParse(Console.ReadLine(), out Guid id))
+            {
+                Console.WriteLine("Неверный формат ID.");
+                return;
+            }
+
+            if (logic.GetTaskById(id) == null)
+            {
+                Console.WriteLine("Задача с таким ID не найдена.");
+                return;
+            }
+
+            Console.WriteLine("Выберите новый приоритет:");
+            Console.WriteLine($"{(int)Priority.Low} - Low");
+            Console.WriteLine($"{(int)Priority.Medium} - Medium");
+            Console.WriteLine($"{(int)Priority.High} - High");
+            Console.Write("Ваш выбор: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int priorityInt) || !Enum.IsDefined(typeof(Priority), priorityInt))
+            {
+                Console.WriteLine("Неверный выбор приоритета.");
+                return;
+            }
+
+            Priority newPriority = (Priority)priorityInt;
+
+            logic.ChangePriority(id, newPriority);
+
+            Console.WriteLine($"Приоритет задачи успешно изменен на '{newPriority}'!");
         }
 
         /// <summary>

@@ -60,7 +60,7 @@ namespace DataAccessLayer
 
         public void Update(Task entity)
         {
-            var sql = $"UPDATE {_tableName} SET Title = @Title, Description = @Description, DeadLine = @DeadLine, Status = @Status WHERE Id = @Id;";
+            var sql = $"UPDATE {_tableName} SET Title = @Title, Description = @Description, DeadLine = @DeadLine, Status = @Status, Priority = @Priority WHERE Id = @Id;";
 
             using (var connection = new SqlConnection(_connectionString))
             {

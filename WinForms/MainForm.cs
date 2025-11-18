@@ -1,24 +1,24 @@
 using Kanban.BL;
 using Kanban.Entities;
+using Ninject;
+using Ninject.Modules;
 using System;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using Task = Kanban.Entities.Task;
 using TaskStatus = Kanban.Entities.TaskStatus;
-using Ninject;
 
 namespace WinForms
 {
     public partial class MainForm : Form
     {
-        private readonly Logic _logic;
-        public MainForm(Logic logic)
+        static IKernel kernel = new StandardKernel (new SimpleConfigModule());
+        ILogicAll logic = kernel.Get<ILogicAll>();
+        public MainForm()
         {
-            InitializeComponent();
-            _logic = logic;
+            InitializeComponent ();
         }
-
         /// <summary>
         /// Вызывается при загрузке формы.
         /// </summary>
@@ -36,7 +36,7 @@ namespace WinForms
             inProgressListBox.Items.Clear();
             doneListBox.Items.Clear();
 
-            var allTasks = _logic.GetAllTasks();
+            var allTasks = logic.GetAllTasks();
 
             foreach (var task in allTasks)
             {
@@ -64,7 +64,7 @@ namespace WinForms
             {
                 if (taskForm.ShowDialog() == DialogResult.OK)
                 {
-                    _logic.AddTask(taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine, taskForm.TaskPriority);
+                    logic.AddTask(taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine, taskForm.TaskPriority);
                     RefreshBoard();
                 }
             }
@@ -79,14 +79,14 @@ namespace WinForms
 
             if (selectedItem is TaskDisplayItem selectedTaskItem)
             {
-                var taskToEdit = _logic.GetTaskById(selectedTaskItem.Id);
+                var taskToEdit = logic.GetTaskById(selectedTaskItem.Id);
                 if (taskToEdit != null)
                 {
                     using (var taskForm = new TaskForm(taskToEdit))
                     {
                         if (taskForm.ShowDialog() == DialogResult.OK)
                         {
-                            _logic.UpdateTask(taskToEdit.Id, taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine, taskForm.TaskPriority);
+                            logic.UpdateTask(taskToEdit.Id, taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine, taskForm.TaskPriority);
                             RefreshBoard();
                         }
                     }
@@ -114,7 +114,7 @@ namespace WinForms
 
                 if (confirmation == DialogResult.Yes)
                 {
-                    _logic.DeleteTask(selectedTaskItem.Id);
+                    logic.DeleteTask(selectedTaskItem.Id);
                     RefreshBoard();
                 }
             }
@@ -196,7 +196,7 @@ namespace WinForms
                 newStatus = TaskStatus.Done;
             }
 
-            _logic.ChangeTaskStatus(draggedItem.Id, newStatus);
+            logic.ChangeTaskStatus(draggedItem.Id, newStatus);
             RefreshBoard();
         }
 
@@ -229,7 +229,7 @@ namespace WinForms
 
             ListBox listBox = sender as ListBox;
             TaskDisplayItem item = listBox.Items[e.Index] as TaskDisplayItem;
-            Task task = _logic.GetTaskById(item.Id);
+            Task task = logic.GetTaskById(item.Id);
 
             bool isSelected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
 

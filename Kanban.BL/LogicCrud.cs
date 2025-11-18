@@ -8,15 +8,19 @@ using TaskStatus = Kanban.Entities.TaskStatus;
 
 namespace Kanban.BL
 {
-
     /// <summary>
-    /// Класс бизнес-логики. Только управляет операциями над сущностями.
+    /// Реализация интерфейса ILogic.
     /// </summary>
-    public class Logic
+    public class LogicCrud : ILogicCrud
     {
-        public IRepository<Task> Repository { get; set; }
+        public IRepository<Task> Repository { get; private set; }
 
-        public Logic(IRepository<Task> repository)
+        /// <summary>
+        /// Инициализирует новый экземпляр класса Logic с предоставленной зависимостью репозитория.
+        /// </summary>
+        /// <param name="repository">Экземпляр репозитория для работы с данными.</param>
+        /// <exception cref="ArgumentNullException">Вызывается, если репозиторий не был предоставлен (null).</exception>
+        public LogicCrud(IRepository<Task> repository)
         {
             if (repository == null)
             {
@@ -25,7 +29,6 @@ namespace Kanban.BL
             }
             this.Repository = repository;
         }
-
 
         public List<Task> GetAllTasks()
         {
@@ -46,9 +49,8 @@ namespace Kanban.BL
                 Description = description,
                 DeadLine = dueDate,
                 Priority = priority,
-                Status = TaskStatus.ToDo 
+                Status = TaskStatus.ToDo
             };
-
             Repository.Add(task);
         }
 
@@ -57,36 +59,24 @@ namespace Kanban.BL
             Repository.Delete(id);
         }
 
-        /// <summary>
-        /// Обновляет ВСЕ поля задачи.
-        /// </summary>
         public void UpdateTask(Guid id, string title, string description, DateTime dueDate, Priority priority)
         {
             var task = Repository.GetById(id);
 
             if (task != null)
             {
-                task.Title = title;
-                task.Description = description;
-                task.DeadLine = dueDate;
-                task.Priority = priority;
+                ApplyTaskUpdates(task, title, description, dueDate, priority);
 
                 Repository.Update(task);
             }
         }
 
-        /// <summary>
-        /// Изменяет статус задачи.
-        /// </summary>
-        public void ChangeTaskStatus(Guid id, TaskStatus newStatus)
+        private void ApplyTaskUpdates(Task task, string title, string description, DateTime dueDate, Priority priority)
         {
-            var task = Repository.GetById(id);
-
-            if (task != null)
-            {
-                task.Status = newStatus;
-                Repository.Update(task);
-            }
+            task.Title = title;
+            task.Description = description;
+            task.DeadLine = dueDate;
+            task.Priority = priority;
         }
     }
 }
