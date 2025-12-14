@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kanban.BL\Kanban.BL.csproj" />
+    <ProjectReference Include="..\Kanban.Entities\Kanban.Entities.csproj" />
+    <ProjectReference Include="..\Kanban.Shared\Kanban.Shared.csproj" />
   </ItemGroup>
 
 </Project>

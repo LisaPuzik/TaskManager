@@ -1,24 +1,28 @@
-﻿using Kanban.BL;
-using Kanban.Entities;
-using Ninject;
+﻿using Kanban.Entities;
+using Kanban.Shared;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Ninject;
 using Task = Kanban.Entities.Task;
 using TaskStatus = Kanban.Entities.TaskStatus;
-using Microsoft.Identity.Client;
 
 namespace Kanban.ConsoleUI
 {
-    class Program
+    public class ConsoleView : IMainView
     {
-        private static ILogicAll logic;
-        static void Main(string[] args)
-        {
-            IKernel kernel = new StandardKernel(new SimpleConfigModule());
+        private List<Task> _cachedTasks = new List<Task>();
 
-            logic = kernel.Get<ILogicAll>();
+        public event EventHandler ViewReady;
+        public event EventHandler<TaskEventArgs> CreateRequest;
+        public event EventHandler<TaskEventArgs> UpdateRequest;
+        public event EventHandler<TaskIdEventArgs> DeleteRequest;
+        public event EventHandler<TaskStatusEventArgs> ChangeStatusRequest;
+        public event EventHandler<TaskPriorityEventArgs> ChangePriorityRequest;
+
+        public void Run()
+        {
+            ViewReady?.Invoke(this, EventArgs.Empty);
 
             while (true)
             {
@@ -35,32 +39,23 @@ namespace Kanban.ConsoleUI
 
                 string choice = Console.ReadLine();
 
-                switch (choice)
+                try
                 {
-                    case "1":
-                        ShowAllTasks();
-                        break;
-                    case "2":
-                        AddTask();
-                        break;
-                    case "3":
-                        UpdateTask();
-                        break;
-                    case "4":
-                        DeleteTask();
-                        break;
-                    case "5":
-                        ChangeTaskStatus();
-                        break;
-                    case "6":
-                        ChangeTaskPriority();
-                        break;
-                    case "7":
-                        Console.WriteLine("До свидания!");
-                        return;
-                    default:
-                        Console.WriteLine("Неверный ввод. Пожалуйста, выберите пункт меню.");
-                        break;
+                    switch (choice)
+                    {
+                        case "1": ShowAllTasksInternal(); break;
+                        case "2": ProcessAddTask(); break;
+                        case "3": ProcessUpdateTask(); break;
+                        case "4": ProcessDeleteTask(); break;
+                        case "5": ProcessChangeStatus(); break;
+                        case "6": ProcessChangePriority(); break;
+                        case "7": return;
+                        default: Console.WriteLine("Неверный ввод."); break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Ошибка: {ex.Message}");
                 }
 
                 Console.WriteLine("\nНажмите любую клавишу для продолжения...");
@@ -68,199 +63,108 @@ namespace Kanban.ConsoleUI
             }
         }
 
-        /// <summary>
-        /// Отображает все задачи, сгруппированные по статусу.
-        /// </summary>
-        private static void ShowAllTasks()
+        public void SetTaskList(IEnumerable<Task> tasks)
+        {
+            _cachedTasks = tasks.ToList();
+        }
+
+        public void ShowMessage(string message)
+        {
+            Console.WriteLine($"[INFO]: {message}");
+        }
+
+        private void ShowAllTasksInternal()
         {
             Console.Clear();
-            var allTasks = logic.GetAllTasks();
-
-            if (!allTasks.Any())
+            if (!_cachedTasks.Any())
             {
-                Console.WriteLine("Задач пока нет. Вы можете добавить новую.");
+                Console.WriteLine("Задач пока нет.");
                 return;
             }
 
-            var groupedTasks = allTasks.GroupBy(t => t.Status);
-
+            var groupedTasks = _cachedTasks.GroupBy(t => t.Status);
             foreach (var group in groupedTasks.OrderBy(g => g.Key))
             {
-                switch (group.Key)
-                {
-                    case TaskStatus.ToDo:
-                        Console.WriteLine("--- К ВЫПОЛНЕНИЮ ---");
-                        break;
-                    case TaskStatus.InProgress:
-                        Console.WriteLine("--- В ПРОЦЕССЕ ---");
-                        break;
-                    case TaskStatus.Done:
-                        Console.WriteLine("--- ГОТОВО ---");
-                        break;
-                }
-
+                Console.WriteLine($"--- {group.Key} ---");
                 foreach (var task in group)
                 {
-                    string priorityMarker = task.Priority == Priority.High ? "[!!!]" : (task.Priority == Priority.Medium ? "[!!]" : "[!]");
-                    Console.WriteLine($"{priorityMarker} [{task.Id}] {task.Title} (до {task.DeadLine:dd.MM.yyyy})");
-                    Console.WriteLine($"\tОписание: {task.Description}");
+                    string pMark = task.Priority == Priority.High ? "[!!!]" : (task.Priority == Priority.Medium ? "[!!]" : "[!]");
+                    Console.WriteLine($"{pMark} [{task.Id}] {task.Title} (до {task.DeadLine:dd.MM.yyyy})");
+                    Console.WriteLine($"\t{task.Description}");
                 }
                 Console.WriteLine();
             }
         }
 
-        /// <summary>
-        /// Запрашивает у пользователя данные для новой задачи и добавляет ее.
-        /// </summary>
-        private static void AddTask()
+        private void ProcessAddTask()
         {
             Console.Clear();
-            Console.WriteLine("--- Добавление новой задачи ---");
+            Console.WriteLine("--- Добавление ---");
+            Console.Write("Название: "); string title = Console.ReadLine();
+            Console.Write("Описание: "); string desc = Console.ReadLine();
+            DateTime date = AskForDate();
+            Priority prio = AskForPriority();
 
-            Console.Write("Введите название: ");
+            CreateRequest?.Invoke(this, new TaskEventArgs { Title = title, Description = desc, DeadLine = date, Priority = prio });
+            Console.WriteLine("Запрос отправлен.");
+        }
+
+        private void ProcessUpdateTask()
+        {
+            ShowAllTasksInternal();
+            Console.Write("\nID для редактирования: ");
+            if (!Guid.TryParse(Console.ReadLine(), out Guid id)) return;
+            var task = _cachedTasks.FirstOrDefault(t => t.Id == id);
+            if (task == null) { Console.WriteLine("Не найдено."); return; }
+
+            Console.WriteLine($"Название ({task.Title}):");
             string title = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(title)) title = task.Title;
 
-            Console.Write("Введите описание: ");
-            string description = Console.ReadLine();
-
-            DateTime deadLine;
-            while (true)
+            Console.WriteLine($"Описание ({task.Description}):");
+            string desc = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(desc)) desc = task.Description;
+            UpdateRequest?.Invoke(this, new TaskEventArgs
             {
-                Console.Write("Введите срок выполнения (в формате дд.мм.гггг): ");
-                if (DateTime.TryParseExact(Console.ReadLine(), "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out deadLine))
-                {
-                    break;
-                }
-                Console.WriteLine("Неверный формат даты. Попробуйте еще раз.");
-            }
-            Priority priority = AskForPriority();
-            logic.AddTask(title, description, deadLine, priority);
-            Console.WriteLine("Задача успешно добавлена!");
+                Id = id,
+                Title = title,
+                Description = desc,
+                DeadLine = task.DeadLine,
+                Priority = task.Priority
+            });
+            Console.WriteLine("Запрос обновления отправлен.");
         }
 
-        /// <summary>
-        /// Запрашивает ID задачи и новые данные для ее обновления.
-        /// </summary>
-        private static void UpdateTask()
+        private void ProcessDeleteTask()
         {
-            Console.Clear();
-            Console.WriteLine("--- Редактирование задачи ---");
-            ShowAllTasks();
-            Console.Write("\nВведите ID задачи, которую хотите изменить: ");
-
-            if (!Guid.TryParse(Console.ReadLine(), out Guid id))
+            ShowAllTasksInternal();
+            Console.Write("\nID для удаления: ");
+            if (Guid.TryParse(Console.ReadLine(), out Guid id))
             {
-                Console.WriteLine("Неверный формат ID.");
-                return;
+                DeleteRequest?.Invoke(this, new TaskIdEventArgs { Id = id });
+                Console.WriteLine("Запрос удаления отправлен.");
             }
-
-            var task = logic.GetTaskById(id);
-            if (task == null)
-            {
-                Console.WriteLine("Задача с таким ID не найдена.");
-                return;
-            }
-
-            Console.WriteLine($"Текущее название: '{task.Title}'. Введите новое или нажмите Enter, чтобы оставить без изменений:");
-            string newTitle = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(newTitle)) newTitle = task.Title;
-
-            Console.WriteLine($"Текущее описание: '{task.Description}'. Введите новое или нажмите Enter:");
-            string newDescription = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(newDescription)) newDescription = task.Description;
-
-            DateTime newDeadLine;
-            while (true)
-            {
-                Console.WriteLine($"Текущий срок: {task.DeadLine:dd.MM.yyyy}. Введите новый (дд.мм.гггг) или нажмите Enter:");
-                string dateInput = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(dateInput))
-                {
-                    newDeadLine = task.DeadLine;
-                    break;
-                }
-                if (DateTime.TryParseExact(dateInput, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out newDeadLine))
-                {
-                    break;
-                }
-                Console.WriteLine("Неверный формат даты.");
-            }
-            Priority newPriority = AskForPriority(task.Priority);
-            logic.UpdateTask(id, newTitle, newDescription, newDeadLine, newPriority);
-            Console.WriteLine("Задача успешно обновлена!");
         }
 
-        /// <summary>
-        /// Запрашивает ID задачи для удаления.
-        /// </summary>
-        private static void DeleteTask()
+        private void ProcessChangeStatus()
         {
-            Console.Clear();
-            Console.WriteLine("--- Удаление задачи ---");
-            ShowAllTasks();
-            Console.Write("\nВведите ID задачи, которую хотите удалить: ");
+            ShowAllTasksInternal();
+            Console.Write("\nID для статуса: ");
+            if (!Guid.TryParse(Console.ReadLine(), out Guid id)) return;
 
-            if (!Guid.TryParse(Console.ReadLine(), out Guid id))
+            Console.WriteLine($"{(int)TaskStatus.ToDo}-ToDo, {(int)TaskStatus.InProgress}-InProg, {(int)TaskStatus.Done}-Done");
+            if (int.TryParse(Console.ReadLine(), out int s) && Enum.IsDefined(typeof(TaskStatus), s))
             {
-                Console.WriteLine("Неверный формат ID.");
-                return;
+                ChangeStatusRequest?.Invoke(this, new TaskStatusEventArgs { Id = id, NewStatus = (TaskStatus)s });
+                Console.WriteLine("Статус изменен.");
             }
-
-            if (logic.GetTaskById(id) == null)
-            {
-                Console.WriteLine("Задача с таким ID не найдена.");
-                return;
-            }
-
-            logic.DeleteTask(id);
-            Console.WriteLine("Задача успешно удалена!");
         }
 
-        /// <summary>
-        /// Запрашивает ID задачи и новый статус для нее.
-        /// </summary>
-        private static void ChangeTaskStatus()
-        {
-            Console.Clear();
-            Console.WriteLine("--- Изменение статуса задачи ---");
-            ShowAllTasks();
-            Console.Write("\nВведите ID задачи для изменения статуса: ");
-
-            if (!Guid.TryParse(Console.ReadLine(), out Guid id))
-            {
-                Console.WriteLine("Неверный формат ID.");
-                return;
-            }
-
-            if (logic.GetTaskById(id) == null)
-            {
-                Console.WriteLine("Задача с таким ID не найдена.");
-                return;
-            }
-
-            Console.WriteLine("Выберите новый статус:");
-            Console.WriteLine($"{(int)TaskStatus.ToDo} - {TaskStatus.ToDo}");
-            Console.WriteLine($"{(int)TaskStatus.InProgress} - {TaskStatus.InProgress}");
-            Console.WriteLine($"{(int)TaskStatus.Done} - {TaskStatus.Done}");
-
-            if (!int.TryParse(Console.ReadLine(), out int statusInt) || !Enum.IsDefined(typeof(TaskStatus), statusInt))
-            {
-                Console.WriteLine("Неверный выбор статуса.");
-                return;
-            }
-
-            logic.ChangeTaskStatus(id, (TaskStatus)statusInt);
-            Console.WriteLine("Статус задачи успешно изменен!");
-        }
-
-        /// <summary>
-        /// Запрашивает ID задачи и новый приоритет для нее.
-        /// </summary>
-        private static void ChangeTaskPriority()
+        private void ProcessChangePriority()
         {
             Console.Clear();
             Console.WriteLine("--- Изменение приоритета задачи ---");
-            ShowAllTasks();
+            ShowAllTasksInternal();
             Console.Write("\nВведите ID задачи для изменения приоритета: ");
 
             if (!Guid.TryParse(Console.ReadLine(), out Guid id))
@@ -269,7 +173,7 @@ namespace Kanban.ConsoleUI
                 return;
             }
 
-            if (logic.GetTaskById(id) == null)
+            if (!_cachedTasks.Any(t => t.Id == id))
             {
                 Console.WriteLine("Задача с таким ID не найдена.");
                 return;
@@ -281,41 +185,38 @@ namespace Kanban.ConsoleUI
             Console.WriteLine($"{(int)Priority.High} - High");
             Console.Write("Ваш выбор: ");
 
-            if (!int.TryParse(Console.ReadLine(), out int priorityInt) || !Enum.IsDefined(typeof(Priority), priorityInt))
+            if (int.TryParse(Console.ReadLine(), out int priorityInt) && Enum.IsDefined(typeof(Priority), priorityInt))
+            {
+                ChangePriorityRequest?.Invoke(this, new TaskPriorityEventArgs
+                {
+                    Id = id,
+                    NewPriority = (Priority)priorityInt
+                });
+
+                Console.WriteLine($"Запрос на смену приоритета отправлен!");
+            }
+            else
             {
                 Console.WriteLine("Неверный выбор приоритета.");
-                return;
             }
-
-            Priority newPriority = (Priority)priorityInt;
-
-            logic.ChangePriority(id, newPriority);
-
-            Console.WriteLine($"Приоритет задачи успешно изменен на '{newPriority}'!");
         }
 
-        /// <summary>
-        /// Запрашивает у пользователя выбор приоритета.
-        /// </summary>
-        private static Priority AskForPriority(Priority? current = null)
+        private DateTime AskForDate()
         {
-            Console.WriteLine($"Выберите приоритет (текущий: {current?.ToString() ?? "не задан"}):");
-            Console.WriteLine($"{(int)Priority.Low} - {Priority.Low}");
-            Console.WriteLine($"{(int)Priority.Medium} - {Priority.Medium}");
-            Console.WriteLine($"{(int)Priority.High} - {Priority.High}");
-
             while (true)
             {
-                string input = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(input) && current.HasValue)
-                {
-                    return current.Value;
-                }
-                if (int.TryParse(input, out int priorityInt) && Enum.IsDefined(typeof(Priority), priorityInt))
-                {
-                    return (Priority)priorityInt;
-                }
-                Console.WriteLine("Неверный ввод. Попробуйте еще раз.");
+                Console.Write("Срок (дд.мм.гггг): ");
+                if (DateTime.TryParseExact(Console.ReadLine(), "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime d)) return d;
+            }
+        }
+
+        private Priority AskForPriority()
+        {
+            Console.WriteLine("0-Low, 1-Medium, 2-High");
+            while (true)
+            {
+                string i = Console.ReadLine();
+                if (int.TryParse(i, out int p) && Enum.IsDefined(typeof(Priority), p)) return (Priority)p;
             }
         }
     }

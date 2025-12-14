@@ -8,9 +8,6 @@ using TaskStatus = Kanban.Entities.TaskStatus;
 
 namespace Kanban.BL
 {
-    /// <summary>
-    /// Реализация интерфейса ILogic.
-    /// </summary>
     public class LogicCrud : ILogicCrud
     {
         public IRepository<Task> Repository { get; private set; }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kanban.BL\Kanban.BL.csproj" />
+    <ProjectReference Include="..\Kanban.Entities\Kanban.Entities.csproj" />
+    <ProjectReference Include="..\Kanban.Shared\Kanban.Shared.csproj" />
   </ItemGroup>
 
 </Project>

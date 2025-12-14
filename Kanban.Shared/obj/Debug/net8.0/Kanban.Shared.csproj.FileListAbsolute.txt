@@ -1,0 +1,16 @@
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\bin\Debug\net8.0\Kanban.Shared.deps.json
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\bin\Debug\net8.0\Kanban.Shared.dll
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\bin\Debug\net8.0\Kanban.Shared.pdb
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\bin\Debug\net8.0\Kanban.Entities.dll
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\bin\Debug\net8.0\Kanban.Entities.pdb
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\Kanban.Shared.csproj.AssemblyReference.cache
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\Kanban.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\Kanban.Shared.AssemblyInfoInputs.cache
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\Kanban.Shared.AssemblyInfo.cs
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\Kanban.Shared.csproj.CoreCompileInputs.cache
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\Kanban.Shared.sourcelink.json
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\Kanban.S.979FCAB0.Up2Date
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\Kanban.Shared.dll
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\refint\Kanban.Shared.dll
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\Kanban.Shared.pdb
+C:\Users\liza5\AISLAB3\TaskManager\Kanban.Shared\obj\Debug\net8.0\ref\Kanban.Shared.dll

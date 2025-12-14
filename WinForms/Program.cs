@@ -1,5 +1,4 @@
 using Ninject;
-using Kanban.BL;
 using System;
 using System.Windows.Forms;
 

@@ -1,94 +1,100 @@
-using Kanban.BL;
 using Kanban.Entities;
-using Ninject;
-using Ninject.Modules;
+using Kanban.Shared;
 using System;
-using System.Data;
-using System.Linq;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Task = Kanban.Entities.Task;
 using TaskStatus = Kanban.Entities.TaskStatus;
 
 namespace WinForms
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IMainView
     {
-        static IKernel kernel = new StandardKernel (new SimpleConfigModule());
-        ILogicAll logic = kernel.Get<ILogicAll>();
+        public event EventHandler ViewReady;
+        public event EventHandler<TaskEventArgs> CreateRequest;
+        public event EventHandler<TaskEventArgs> UpdateRequest;
+        public event EventHandler<TaskIdEventArgs> DeleteRequest;
+        public event EventHandler<TaskStatusEventArgs> ChangeStatusRequest;
+        public event EventHandler<TaskPriorityEventArgs> ChangePriorityRequest;
+
         public MainForm()
         {
-            InitializeComponent ();
-        }
-        /// <summary>
-        /// Вызывается при загрузке формы.
-        /// </summary>
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            RefreshBoard();
+            InitializeComponent();
         }
 
-        /// <summary>
-        /// Полностью обновляет все списки на доске, загружая данные из 'logic'.
-        /// </summary>
-        private void RefreshBoard()
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            ViewReady?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void SetTaskList(IEnumerable<Task> tasks)
         {
             toDoListBox.Items.Clear();
             inProgressListBox.Items.Clear();
             doneListBox.Items.Clear();
 
-            var allTasks = logic.GetAllTasks();
-
-            foreach (var task in allTasks)
+            foreach (var task in tasks)
             {
+                var item = new TaskDisplayItem(task);
+
                 switch (task.Status)
                 {
                     case TaskStatus.ToDo:
-                        toDoListBox.Items.Add(new TaskDisplayItem(task));
+                        toDoListBox.Items.Add(item);
                         break;
                     case TaskStatus.InProgress:
-                        inProgressListBox.Items.Add(new TaskDisplayItem(task));
+                        inProgressListBox.Items.Add(item);
                         break;
                     case TaskStatus.Done:
-                        doneListBox.Items.Add(new TaskDisplayItem(task));
+                        doneListBox.Items.Add(item);
                         break;
                 }
             }
         }
 
-        /// <summary>
-        /// Обработчик нажатия на кнопку "Добавить".
-        /// </summary>
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void addButton_Click(object sender, EventArgs e)
         {
             using (var taskForm = new TaskForm())
             {
                 if (taskForm.ShowDialog() == DialogResult.OK)
                 {
-                    logic.AddTask(taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine, taskForm.TaskPriority);
-                    RefreshBoard();
+                    CreateRequest?.Invoke(this, new TaskEventArgs
+                    {
+                        Title = taskForm.TaskTitle,
+                        Description = taskForm.TaskDescription,
+                        DeadLine = taskForm.TaskDeadLine,
+                        Priority = taskForm.TaskPriority
+                    });
                 }
             }
         }
 
-        /// <summary>
-        /// Обработчик нажатия на кнопку "Редактировать".
-        /// </summary>
         private void editButton_Click(object sender, EventArgs e)
         {
-            var selectedItem = toDoListBox.SelectedItem ?? inProgressListBox.SelectedItem ?? doneListBox.SelectedItem;
+            var selectedItem = GetSelectedItem();
 
-            if (selectedItem is TaskDisplayItem selectedTaskItem)
+            if (selectedItem != null)
             {
-                var taskToEdit = logic.GetTaskById(selectedTaskItem.Id);
-                if (taskToEdit != null)
+                var taskToEdit = selectedItem.TaskObject;
+
+                using (var taskForm = new TaskForm(taskToEdit))
                 {
-                    using (var taskForm = new TaskForm(taskToEdit))
+                    if (taskForm.ShowDialog() == DialogResult.OK)
                     {
-                        if (taskForm.ShowDialog() == DialogResult.OK)
+                        UpdateRequest?.Invoke(this, new TaskEventArgs
                         {
-                            logic.UpdateTask(taskToEdit.Id, taskForm.TaskTitle, taskForm.TaskDescription, taskForm.TaskDeadLine, taskForm.TaskPriority);
-                            RefreshBoard();
-                        }
+                            Id = taskToEdit.Id,
+                            Title = taskForm.TaskTitle,
+                            Description = taskForm.TaskDescription,
+                            DeadLine = taskForm.TaskDeadLine,
+                            Priority = taskForm.TaskPriority
+                        });
                     }
                 }
             }
@@ -98,24 +104,20 @@ namespace WinForms
             }
         }
 
-        /// <summary>
-        /// Обработчик нажатия на кнопку "Удалить".
-        /// </summary>
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            var selectedItem = toDoListBox.SelectedItem ?? inProgressListBox.SelectedItem ?? doneListBox.SelectedItem;
+            var selectedItem = GetSelectedItem();
 
-            if (selectedItem is TaskDisplayItem selectedTaskItem)
+            if (selectedItem != null)
             {
-                var confirmation = MessageBox.Show($"Вы уверены, что хотите удалить задачу '{selectedTaskItem.Title}'?",
+                var confirmation = MessageBox.Show($"Вы уверены, что хотите удалить задачу '{selectedItem.TaskObject.Title}'?",
                                                    "Подтверждение удаления",
                                                    MessageBoxButtons.YesNo,
                                                    MessageBoxIcon.Question);
 
                 if (confirmation == DialogResult.Yes)
                 {
-                    logic.DeleteTask(selectedTaskItem.Id);
-                    RefreshBoard();
+                    DeleteRequest?.Invoke(this, new TaskIdEventArgs { Id = selectedItem.TaskObject.Id });
                 }
             }
             else
@@ -124,30 +126,11 @@ namespace WinForms
             }
         }
 
-
-        /// <summary>
-        /// Вспомогательный класс для отображения задач в ListBox.
-        /// </summary>
-        private class TaskDisplayItem
+        private TaskDisplayItem GetSelectedItem()
         {
-            public Guid Id { get; }
-            public string Title { get; }
-
-            public TaskDisplayItem(Task task)
-            {
-                Id = task.Id;
-                Title = task.Title;
-            }
-
-            public override string ToString()
-            {
-                return Title;
-            }
+            return (toDoListBox.SelectedItem ?? inProgressListBox.SelectedItem ?? doneListBox.SelectedItem) as TaskDisplayItem;
         }
 
-        /// <summary>
-        /// Срабатывает при нажатии кнопки мыши.Выбирает элемент под курсором и "запоминает" его для возможного перетаскивания.
-        /// </summary>
         private void listBox_MouseDown(object sender, MouseEventArgs e)
         {
             ListBox sourceListBox = sender as ListBox;
@@ -158,9 +141,15 @@ namespace WinForms
             }
         }
 
-        /// <summary>
-        /// Срабатывает, когда перетаскиваемый объект входит в границы ListBox.
-        /// </summary>
+        private void listBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && (sender as ListBox).SelectedItem != null)
+            {
+                ListBox sourceListBox = sender as ListBox;
+                sourceListBox.DoDragDrop(sourceListBox.SelectedItem, DragDropEffects.Move);
+            }
+        }
+
         private void listBox_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(TaskDisplayItem)))
@@ -173,12 +162,10 @@ namespace WinForms
             }
         }
 
-        /// <summary>
-        /// Срабатывает, когда пользователь отпускает кнопку мыши над списком, тобишь помещает задачу в ListBox.
-        /// </summary>
         private void listBox_DragDrop(object sender, DragEventArgs e)
         {
             TaskDisplayItem draggedItem = (TaskDisplayItem)e.Data.GetData(typeof(TaskDisplayItem));
+            if (draggedItem == null) return;
 
             ListBox targetListBox = sender as ListBox;
             TaskStatus newStatus;
@@ -196,30 +183,13 @@ namespace WinForms
                 newStatus = TaskStatus.Done;
             }
 
-            logic.ChangeTaskStatus(draggedItem.Id, newStatus);
-            RefreshBoard();
-        }
-
-        private void toDoListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// Срабатывает при движении мыши над списком.
-        /// Если левая кнопка зажата и есть выбранный элемент, НАЧИНАЕТ перетаскивание.
-        /// </summary>
-        private void listBox_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left && (sender as ListBox).SelectedItem != null)
+            if (draggedItem.TaskObject.Status != newStatus)
             {
-                ListBox sourceListBox = sender as ListBox;
-                sourceListBox.DoDragDrop(sourceListBox.SelectedItem, DragDropEffects.Move);
+                ChangeStatusRequest?.Invoke(this, new TaskStatusEventArgs
+                {
+                    Id = draggedItem.TaskObject.Id,
+                    NewStatus = newStatus
+                });
             }
         }
 
@@ -229,7 +199,8 @@ namespace WinForms
 
             ListBox listBox = sender as ListBox;
             TaskDisplayItem item = listBox.Items[e.Index] as TaskDisplayItem;
-            Task task = logic.GetTaskById(item.Id);
+
+            Task task = item.TaskObject;
 
             bool isSelected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
 
@@ -244,7 +215,6 @@ namespace WinForms
             }
 
             Color finalBackgroundColor = isSelected ? SystemColors.Highlight : backgroundColor;
-
 
             e.Graphics.FillRectangle(new SolidBrush(finalBackgroundColor), e.Bounds);
 
@@ -263,6 +233,25 @@ namespace WinForms
                 StringFormat.GenericDefault
             );
             e.DrawFocusRectangle();
+        }
+
+        private void toDoListBox_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void label1_Click(object sender, EventArgs e) { }
+
+        private class TaskDisplayItem
+        {
+            public Task TaskObject { get; }
+            public string Title => TaskObject.Title;
+
+            public TaskDisplayItem(Task task)
+            {
+                TaskObject = task;
+            }
+
+            public override string ToString()
+            {
+                return Title;
+            }
         }
     }
 }

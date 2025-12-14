@@ -1,5 +1,4 @@
-﻿using Kanban.BL;
-using Kanban.Entities;
+﻿using Kanban.Entities;
 using System;
 using System.Windows.Forms;
 using Task = Kanban.Entities.Task;

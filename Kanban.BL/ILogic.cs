@@ -70,6 +70,9 @@ namespace Kanban.BL
     }
     public interface ILogicAll : ILogicBL, ILogicCrud
     {
-
+        /// <summary>
+        /// Событие, которое срабатывает при любом изменении данных (добавление, удаление, редактирование).
+        /// </summary>
+        event EventHandler ModelUpdated;
     }
 }
