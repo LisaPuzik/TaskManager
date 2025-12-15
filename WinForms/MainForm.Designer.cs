@@ -51,7 +51,6 @@
             editButton.TabIndex = 1;
             editButton.Text = "Редактировать";
             editButton.UseVisualStyleBackColor = true;
-            editButton.Click += editButton_Click;
             // 
             // addButton
             // 
@@ -61,7 +60,6 @@
             addButton.TabIndex = 0;
             addButton.Text = "Добавить";
             addButton.UseVisualStyleBackColor = true;
-            addButton.Click += addButton_Click;
             // 
             // deleteButton
             // 
@@ -71,7 +69,6 @@
             deleteButton.TabIndex = 2;
             deleteButton.Text = "Удалить";
             deleteButton.UseVisualStyleBackColor = true;
-            deleteButton.Click += deleteButton_Click;
             // 
             // flowLayoutPanel1
             // 
@@ -116,10 +113,6 @@
             toDoListBox.Size = new Size(270, 401);
             toDoListBox.TabIndex = 0;
             toDoListBox.DrawItem += listBox_DrawItem;
-            toDoListBox.SelectedIndexChanged += toDoListBox_SelectedIndexChanged;
-            toDoListBox.DragDrop += listBox_DragDrop;
-            toDoListBox.DragEnter += listBox_DragEnter;
-            toDoListBox.MouseDown += listBox_MouseDown;
             toDoListBox.MouseMove += listBox_MouseMove;
             // 
             // inProgressListBox
@@ -133,9 +126,6 @@
             inProgressListBox.Size = new Size(271, 401);
             inProgressListBox.TabIndex = 1;
             inProgressListBox.DrawItem += listBox_DrawItem;
-            inProgressListBox.DragDrop += listBox_DragDrop;
-            inProgressListBox.DragEnter += listBox_DragEnter;
-            inProgressListBox.MouseDown += listBox_MouseDown;
             inProgressListBox.MouseMove += listBox_MouseMove;
             // 
             // doneListBox
@@ -149,9 +139,6 @@
             doneListBox.Size = new Size(272, 401);
             doneListBox.TabIndex = 2;
             doneListBox.DrawItem += listBox_DrawItem;
-            doneListBox.DragDrop += listBox_DragDrop;
-            doneListBox.DragEnter += listBox_DragEnter;
-            doneListBox.MouseDown += listBox_MouseDown;
             doneListBox.MouseMove += listBox_MouseMove;
             // 
             // label1
@@ -164,7 +151,6 @@
             label1.Size = new Size(270, 41);
             label1.TabIndex = 3;
             label1.Text = "Сделать";
-            label1.Click += label1_Click;
             // 
             // label2
             // 
@@ -197,7 +183,6 @@
             Controls.Add(flowLayoutPanel1);
             Name = "MainForm";
             Text = "Form1";
-            Load += MainForm_Load;
             flowLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();

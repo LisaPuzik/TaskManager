@@ -1,158 +1,77 @@
-using Kanban.Entities;
-using Kanban.Shared;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Task = Kanban.Entities.Task;
+using Kanban.Entities;
+using Kanban.Presenter.DTO;
+using Kanban.Presenter.ViewModels;
 using TaskStatus = Kanban.Entities.TaskStatus;
 
 namespace WinForms
 {
-    public partial class MainForm : Form, IMainView
+    public partial class MainForm : Form
     {
-        public event EventHandler ViewReady;
-        public event EventHandler<TaskEventArgs> CreateRequest;
-        public event EventHandler<TaskEventArgs> UpdateRequest;
-        public event EventHandler<TaskIdEventArgs> DeleteRequest;
-        public event EventHandler<TaskStatusEventArgs> ChangeStatusRequest;
-        public event EventHandler<TaskPriorityEventArgs> ChangePriorityRequest;
+        private readonly MainViewModel _viewModel;
 
-        public MainForm()
+        public MainForm(MainViewModel viewModel)
         {
             InitializeComponent();
+            _viewModel = viewModel;
+
+            BindListBox(toDoListBox, _viewModel.ToDoTasks);
+            BindListBox(inProgressListBox, _viewModel.InProgressTasks);
+            BindListBox(doneListBox, _viewModel.DoneTasks);
+
+            addButton.Click += (s, e) => _viewModel.AddCommand.Execute(null);
+            editButton.Click += (s, e) => _viewModel.UpdateCommand.Execute(null);
+            deleteButton.Click += (s, e) => _viewModel.DeleteCommand.Execute(null);
+
+            toDoListBox.SelectedIndexChanged += OnSelectionChanged;
+            inProgressListBox.SelectedIndexChanged += OnSelectionChanged;
+            doneListBox.SelectedIndexChanged += OnSelectionChanged;
+
+            SetupContextMenu();
+
+            SetupDragAndDrop(toDoListBox);
+            SetupDragAndDrop(inProgressListBox);
+            SetupDragAndDrop(doneListBox);
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void BindListBox(ListBox listBox, object dataSource)
         {
-            ViewReady?.Invoke(this, EventArgs.Empty);
+            listBox.DataSource = dataSource;
+            listBox.DisplayMember = "Title";
         }
 
-        public void SetTaskList(IEnumerable<Task> tasks)
+        private void SetupDragAndDrop(ListBox listBox)
         {
-            toDoListBox.Items.Clear();
-            inProgressListBox.Items.Clear();
-            doneListBox.Items.Clear();
+            listBox.AllowDrop = true;
 
-            foreach (var task in tasks)
-            {
-                var item = new TaskDisplayItem(task);
-
-                switch (task.Status)
-                {
-                    case TaskStatus.ToDo:
-                        toDoListBox.Items.Add(item);
-                        break;
-                    case TaskStatus.InProgress:
-                        inProgressListBox.Items.Add(item);
-                        break;
-                    case TaskStatus.Done:
-                        doneListBox.Items.Add(item);
-                        break;
-                }
-            }
+            listBox.MouseDown += ListBox_MouseDown;
+            listBox.DragEnter += ListBox_DragEnter;
+            listBox.DragDrop += ListBox_DragDrop;
         }
 
-        public void ShowMessage(string message)
+        private void ListBox_MouseDown(object sender, MouseEventArgs e)
         {
-            MessageBox.Show(message, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
+            var listBox = sender as ListBox;
+            if (listBox == null) return;
 
-        private void addButton_Click(object sender, EventArgs e)
-        {
-            using (var taskForm = new TaskForm())
-            {
-                if (taskForm.ShowDialog() == DialogResult.OK)
-                {
-                    CreateRequest?.Invoke(this, new TaskEventArgs
-                    {
-                        Title = taskForm.TaskTitle,
-                        Description = taskForm.TaskDescription,
-                        DeadLine = taskForm.TaskDeadLine,
-                        Priority = taskForm.TaskPriority
-                    });
-                }
-            }
-        }
-
-        private void editButton_Click(object sender, EventArgs e)
-        {
-            var selectedItem = GetSelectedItem();
-
-            if (selectedItem != null)
-            {
-                var taskToEdit = selectedItem.TaskObject;
-
-                using (var taskForm = new TaskForm(taskToEdit))
-                {
-                    if (taskForm.ShowDialog() == DialogResult.OK)
-                    {
-                        UpdateRequest?.Invoke(this, new TaskEventArgs
-                        {
-                            Id = taskToEdit.Id,
-                            Title = taskForm.TaskTitle,
-                            Description = taskForm.TaskDescription,
-                            DeadLine = taskForm.TaskDeadLine,
-                            Priority = taskForm.TaskPriority
-                        });
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, выберите задачу для редактирования.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private void deleteButton_Click(object sender, EventArgs e)
-        {
-            var selectedItem = GetSelectedItem();
-
-            if (selectedItem != null)
-            {
-                var confirmation = MessageBox.Show($"Вы уверены, что хотите удалить задачу '{selectedItem.TaskObject.Title}'?",
-                                                   "Подтверждение удаления",
-                                                   MessageBoxButtons.YesNo,
-                                                   MessageBoxIcon.Question);
-
-                if (confirmation == DialogResult.Yes)
-                {
-                    DeleteRequest?.Invoke(this, new TaskIdEventArgs { Id = selectedItem.TaskObject.Id });
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, выберите задачу для удаления.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private TaskDisplayItem GetSelectedItem()
-        {
-            return (toDoListBox.SelectedItem ?? inProgressListBox.SelectedItem ?? doneListBox.SelectedItem) as TaskDisplayItem;
-        }
-
-        private void listBox_MouseDown(object sender, MouseEventArgs e)
-        {
-            ListBox sourceListBox = sender as ListBox;
-            int index = sourceListBox.IndexFromPoint(e.Location);
+            int index = listBox.IndexFromPoint(e.Location);
             if (index != ListBox.NoMatches)
             {
-                sourceListBox.SelectedItem = sourceListBox.Items[index];
+                listBox.SelectedIndex = index;
+                var item = listBox.Items[index];
+
+                if (item != null)
+                {
+                    listBox.DoDragDrop(item, DragDropEffects.Move);
+                }
             }
         }
 
-        private void listBox_MouseMove(object sender, MouseEventArgs e)
+        private void ListBox_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && (sender as ListBox).SelectedItem != null)
-            {
-                ListBox sourceListBox = sender as ListBox;
-                sourceListBox.DoDragDrop(sourceListBox.SelectedItem, DragDropEffects.Move);
-            }
-        }
-
-        private void listBox_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(typeof(TaskDisplayItem)))
+            if (e.Data.GetDataPresent(typeof(TaskDto)))
             {
                 e.Effect = DragDropEffects.Move;
             }
@@ -162,96 +81,61 @@ namespace WinForms
             }
         }
 
-        private void listBox_DragDrop(object sender, DragEventArgs e)
+        private void ListBox_DragDrop(object sender, DragEventArgs e)
         {
-            TaskDisplayItem draggedItem = (TaskDisplayItem)e.Data.GetData(typeof(TaskDisplayItem));
-            if (draggedItem == null) return;
+            var targetListBox = sender as ListBox;
+            var task = (TaskDto)e.Data.GetData(typeof(TaskDto));
 
-            ListBox targetListBox = sender as ListBox;
-            TaskStatus newStatus;
+            if (targetListBox != null && task != null)
+            {
+                TaskStatus newStatus;
 
-            if (targetListBox == toDoListBox)
-            {
-                newStatus = TaskStatus.ToDo;
+                if (targetListBox == toDoListBox) newStatus = TaskStatus.ToDo;
+                else if (targetListBox == inProgressListBox) newStatus = TaskStatus.InProgress;
+                else newStatus = TaskStatus.Done;
+                _viewModel.SetTaskStatus(task, newStatus);
             }
-            else if (targetListBox == inProgressListBox)
-            {
-                newStatus = TaskStatus.InProgress;
-            }
-            else
-            {
-                newStatus = TaskStatus.Done;
-            }
+        }
 
-            if (draggedItem.TaskObject.Status != newStatus)
+        private void OnSelectionChanged(object sender, EventArgs e)
+        {
+            var lb = sender as ListBox;
+            if (lb?.SelectedItem is TaskDto task)
             {
-                ChangeStatusRequest?.Invoke(this, new TaskStatusEventArgs
-                {
-                    Id = draggedItem.TaskObject.Id,
-                    NewStatus = newStatus
-                });
+                if (lb != toDoListBox) toDoListBox.ClearSelected();
+                if (lb != inProgressListBox) inProgressListBox.ClearSelected();
+                if (lb != doneListBox) doneListBox.ClearSelected();
+                _viewModel.SelectedTask = task;
             }
+        }
+
+        private void SetupContextMenu()
+        {
+            var menu = new ContextMenuStrip();
+            menu.Items.Add("Move Next ->", null, (s, e) => _viewModel.MoveNextCommand.Execute(_viewModel.SelectedTask));
+            menu.Items.Add("<- Move Prev", null, (s, e) => _viewModel.MovePrevCommand.Execute(_viewModel.SelectedTask));
+
+            toDoListBox.ContextMenuStrip = menu;
+            inProgressListBox.ContextMenuStrip = menu;
+            doneListBox.ContextMenuStrip = menu;
         }
 
         private void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0) return;
-
-            ListBox listBox = sender as ListBox;
-            TaskDisplayItem item = listBox.Items[e.Index] as TaskDisplayItem;
-
-            Task task = item.TaskObject;
+            var lb = sender as ListBox;
+            if (!(lb.Items[e.Index] is TaskDto task)) return;
 
             bool isSelected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
+            Color bg = Color.White;
+            if (task.Priority == (int)Priority.High) bg = Color.LightCoral;
+            else if (task.Priority == (int)Priority.Medium) bg = Color.LightYellow;
 
-            Color backgroundColor = Color.White;
-            if (task.Priority == Priority.High)
-            {
-                backgroundColor = Color.LightCoral;
-            }
-            else if (task.Priority == Priority.Medium)
-            {
-                backgroundColor = Color.LightYellow;
-            }
-
-            Color finalBackgroundColor = isSelected ? SystemColors.Highlight : backgroundColor;
-
-            e.Graphics.FillRectangle(new SolidBrush(finalBackgroundColor), e.Bounds);
-
-            Brush textColor = isSelected ? Brushes.White : Brushes.Black;
-
-            if (task.DeadLine.Date < DateTime.Now.Date && task.Status != TaskStatus.Done)
-            {
-                textColor = Brushes.DarkRed;
-            }
-
-            e.Graphics.DrawString(
-                item.Title,
-                e.Font,
-                textColor,
-                e.Bounds,
-                StringFormat.GenericDefault
-            );
+            e.Graphics.FillRectangle(new SolidBrush(isSelected ? SystemColors.Highlight : bg), e.Bounds);
+            Brush text = isSelected ? Brushes.White : Brushes.Black;
+            e.Graphics.DrawString(task.Title, e.Font, text, e.Bounds);
             e.DrawFocusRectangle();
         }
-
-        private void toDoListBox_SelectedIndexChanged(object sender, EventArgs e) { }
-        private void label1_Click(object sender, EventArgs e) { }
-
-        private class TaskDisplayItem
-        {
-            public Task TaskObject { get; }
-            public string Title => TaskObject.Title;
-
-            public TaskDisplayItem(Task task)
-            {
-                TaskObject = task;
-            }
-
-            public override string ToString()
-            {
-                return Title;
-            }
-        }
+        private void listBox_MouseMove(object sender, MouseEventArgs e) { }
     }
 }

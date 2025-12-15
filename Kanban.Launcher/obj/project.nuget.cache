@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "i3pMpHvSG7k=",
+  "success": false,
+  "projectFilePath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Launcher\\Kanban.Launcher.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project Kanban.View.WPF is not compatible with net8.0 (.NETCoreApp,Version=v8.0). Project Kanban.View.WPF supports: net8.0-windows7.0 (.NETCoreApp,Version=v8.0)",
+      "projectPath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Launcher\\Kanban.Launcher.csproj",
+      "filePath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Launcher\\Kanban.Launcher.csproj",
+      "libraryId": "Kanban.View.WPF",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}

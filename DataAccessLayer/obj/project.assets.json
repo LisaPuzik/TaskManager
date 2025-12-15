@@ -4012,11 +4012,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\DataAccessLayer\\DataAccessLayer.csproj",
+      "projectUniqueName": "C:\\Users\\liza5\\ISALab5\\TaskManager\\DataAccessLayer\\DataAccessLayer.csproj",
       "projectName": "DataAccessLayer",
-      "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\DataAccessLayer\\DataAccessLayer.csproj",
+      "projectPath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\DataAccessLayer\\DataAccessLayer.csproj",
       "packagesPath": "C:\\Users\\liza5\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\DataAccessLayer\\obj\\",
+      "outputPath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\DataAccessLayer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4038,8 +4038,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj": {
-              "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj"
+            "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj": {
+              "projectPath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj"
             }
           }
         }

@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kanban.Entities\Kanban.Entities.csproj" />
-    <ProjectReference Include="..\Kanban.Shared\Kanban.Shared.csproj" />
+    <ProjectReference Include="..\Kanban.Presenter\Kanban.Presenter.csproj" />
   </ItemGroup>
 
 </Project>

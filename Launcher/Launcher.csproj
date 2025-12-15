@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<UseWPF>true</UseWPF>
+	<UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Console\Console.csproj" />
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
+    <ProjectReference Include="..\Kanban.BL\Kanban.BL.csproj" />
+    <ProjectReference Include="..\Kanban.Presenter\Kanban.Presenter.csproj" />
+    <ProjectReference Include="..\Kanban.View.WPF\Kanban.View.WPF.csproj" />
+    <ProjectReference Include="..\WinForms\WinForms.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -8,11 +8,9 @@
     ".NETCoreApp,Version=v8.0": {
       "Kanban.Presenter/1.0.0": {
         "dependencies": {
-          "Console": "1.0.0",
           "Kanban.BL": "1.0.0",
           "Kanban.Entities": "1.0.0",
-          "Kanban.Shared": "1.0.0",
-          "WinForms": "1.0.0"
+          "Kanban.Shared": "1.0.0"
         },
         "runtime": {
           "Kanban.Presenter.dll": {}
@@ -619,19 +617,6 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "Console/1.0.0": {
-        "dependencies": {
-          "Kanban.Entities": "1.0.0",
-          "Kanban.Shared": "1.0.0",
-          "Ninject": "3.3.6"
-        },
-        "runtime": {
-          "Console.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "DataAccessLayer/1.0.0": {
         "dependencies": {
           "Dapper": "2.1.66",
@@ -673,19 +658,6 @@
         },
         "runtime": {
           "Kanban.Shared.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "WinForms/1.0.0": {
-        "dependencies": {
-          "Kanban.Entities": "1.0.0",
-          "Kanban.Shared": "1.0.0",
-          "Ninject": "3.3.6"
-        },
-        "runtime": {
-          "WinForms.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -1077,11 +1049,6 @@
       "path": "system.threading.tasks/4.3.0",
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
     },
-    "Console/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "DataAccessLayer/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -1098,11 +1065,6 @@
       "sha512": ""
     },
     "Kanban.Shared/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "WinForms/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

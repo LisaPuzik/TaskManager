@@ -33,3 +33,15 @@ C:\Users\liza5\AISLAB3\TaskManager\Kanban.Entities\obj\Debug\net8.0\Kanban.Entit
 C:\Users\liza5\AISLAB3\TaskManager\Kanban.Entities\obj\Debug\net8.0\refint\Kanban.Entities.dll
 C:\Users\liza5\AISLAB3\TaskManager\Kanban.Entities\obj\Debug\net8.0\Kanban.Entities.pdb
 C:\Users\liza5\AISLAB3\TaskManager\Kanban.Entities\obj\Debug\net8.0\ref\Kanban.Entities.dll
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\bin\Debug\net8.0\Kanban.Entities.deps.json
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\bin\Debug\net8.0\Kanban.Entities.dll
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\bin\Debug\net8.0\Kanban.Entities.pdb
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\obj\Debug\net8.0\Kanban.Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\obj\Debug\net8.0\Kanban.Entities.AssemblyInfoInputs.cache
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\obj\Debug\net8.0\Kanban.Entities.AssemblyInfo.cs
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\obj\Debug\net8.0\Kanban.Entities.csproj.CoreCompileInputs.cache
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\obj\Debug\net8.0\Kanban.Entities.sourcelink.json
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\obj\Debug\net8.0\Kanban.Entities.dll
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\obj\Debug\net8.0\refint\Kanban.Entities.dll
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\obj\Debug\net8.0\Kanban.Entities.pdb
+C:\Users\liza5\ISALab5\TaskManager\Kanban.Entities\obj\Debug\net8.0\ref\Kanban.Entities.dll

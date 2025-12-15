@@ -1,0 +1,102 @@
+﻿<local:ViewBase x:Class="Kanban.View.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kanban.View.WPF"
+        mc:Ignorable="d"
+        Title="Kanban" Height="600" Width="1000" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <DataTemplate x:Key="TaskCardTemplate">
+            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5" Padding="5">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Priority}" Value="2">
+                                <Setter Property="Background" Value="#F08080"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Priority}" Value="1">
+                                <Setter Property="Background" Value="#FFFFE0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <StackPanel>
+                    <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,5"/>
+
+                    <TextBlock Text="{Binding Description}" FontSize="12" Foreground="#444" Margin="0,0,0,5" TextWrapping="Wrap" MaxHeight="50" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding DeadLine, StringFormat=d}" FontSize="10" FontStyle="Italic" HorizontalAlignment="Right"/>
+                    <Grid Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" Content="⬅" 
+                                Command="{Binding DataContext.MovePrevCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                CommandParameter="{Binding}" 
+                                Margin="0,0,2,0" Height="20" ToolTip="Move Back"/>
+
+                        <Button Grid.Column="1" Content="➡" 
+                                Command="{Binding DataContext.MoveNextCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                CommandParameter="{Binding}" 
+                                Margin="2,0,0,0" Height="20" ToolTip="Move Forward"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
+        <Style TargetType="ListBox">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ItemTemplate" Value="{StaticResource TaskCardTemplate}"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left">
+            <Button Content="Добавить" Command="{Binding AddCommand}" Width="100" Height="30" Margin="0,0,10,0" Background="#90EE90"/>
+            <Button Content="Изменить" Command="{Binding UpdateCommand}" Width="100" Height="30" Margin="0,0,10,0"/>
+            <Button Content="Удалить" Command="{Binding DeleteCommand}" Width="100" Height="30" Margin="0,0,10,0" Background="#F08080"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Margin="2">
+            <DockPanel>
+                <TextBlock Text="To Do" DockPanel.Dock="Top" TextAlignment="Center" FontSize="16" FontWeight="Bold" Background="#EEEEEE" Padding="5"/>
+                <ListBox ItemsSource="{Binding ToDoTasks}" SelectedItem="{Binding SelectedTask}"/>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="2">
+            <DockPanel>
+                <TextBlock Text="In Progress" DockPanel.Dock="Top" TextAlignment="Center" FontSize="16" FontWeight="Bold" Background="#EEEEEE" Padding="5"/>
+                <ListBox ItemsSource="{Binding InProgressTasks}" SelectedItem="{Binding SelectedTask}"/>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="2" BorderBrush="Gray" BorderThickness="1" Margin="2">
+            <DockPanel>
+                <TextBlock Text="Done" DockPanel.Dock="Top" TextAlignment="Center" FontSize="16" FontWeight="Bold" Background="#EEEEEE" Padding="5"/>
+                <ListBox ItemsSource="{Binding DoneTasks}" SelectedItem="{Binding SelectedTask}"/>
+            </DockPanel>
+        </Border>
+
+    </Grid>
+</local:ViewBase>

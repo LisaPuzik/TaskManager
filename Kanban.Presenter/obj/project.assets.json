@@ -950,21 +950,6 @@
           }
         }
       },
-      "Console/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "Kanban.Entities": "1.0.0",
-          "Kanban.Shared": "1.0.0",
-          "Ninject": "3.3.6"
-        },
-        "compile": {
-          "bin/placeholder/Console.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Console.dll": {}
-        }
-      },
       "DataAccessLayer/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -1018,24 +1003,6 @@
         "runtime": {
           "bin/placeholder/Kanban.Shared.dll": {}
         }
-      },
-      "WinForms/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "Kanban.Entities": "1.0.0",
-          "Kanban.Shared": "1.0.0",
-          "Ninject": "3.3.6"
-        },
-        "compile": {
-          "bin/placeholder/WinForms.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/WinForms.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.WindowsDesktop.App.WindowsForms"
-        ]
       }
     }
   },
@@ -2833,11 +2800,6 @@
         "system.threading.tasks.nuspec"
       ]
     },
-    "Console/1.0.0": {
-      "type": "project",
-      "path": "../Console/Console.csproj",
-      "msbuildProject": "../Console/Console.csproj"
-    },
     "DataAccessLayer/1.0.0": {
       "type": "project",
       "path": "../DataAccessLayer/DataAccessLayer.csproj",
@@ -2857,20 +2819,13 @@
       "type": "project",
       "path": "../Kanban.Shared/Kanban.Shared.csproj",
       "msbuildProject": "../Kanban.Shared/Kanban.Shared.csproj"
-    },
-    "WinForms/1.0.0": {
-      "type": "project",
-      "path": "../WinForms/WinForms.csproj",
-      "msbuildProject": "../WinForms/WinForms.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
-      "Console >= 1.0.0",
       "Kanban.BL >= 1.0.0",
       "Kanban.Entities >= 1.0.0",
-      "Kanban.Shared >= 1.0.0",
-      "WinForms >= 1.0.0"
+      "Kanban.Shared >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -2880,11 +2835,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Presenter\\Kanban.Presenter.csproj",
+      "projectUniqueName": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Presenter\\Kanban.Presenter.csproj",
       "projectName": "Kanban.Presenter",
-      "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Presenter\\Kanban.Presenter.csproj",
+      "projectPath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Presenter\\Kanban.Presenter.csproj",
       "packagesPath": "C:\\Users\\liza5\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Presenter\\obj\\",
+      "outputPath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Presenter\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2906,20 +2861,14 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-            "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Console\\Console.csproj": {
-              "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Console\\Console.csproj"
+            "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.BL\\Kanban.BL.csproj": {
+              "projectPath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.BL\\Kanban.BL.csproj"
             },
-            "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.BL\\Kanban.BL.csproj": {
-              "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.BL\\Kanban.BL.csproj"
+            "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj": {
+              "projectPath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj"
             },
-            "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj": {
-              "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Entities\\Kanban.Entities.csproj"
-            },
-            "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Shared\\Kanban.Shared.csproj": {
-              "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\Kanban.Shared\\Kanban.Shared.csproj"
-            },
-            "C:\\Users\\liza5\\AISLAB3\\TaskManager\\WinForms\\WinForms.csproj": {
-              "projectPath": "C:\\Users\\liza5\\AISLAB3\\TaskManager\\WinForms\\WinForms.csproj"
+            "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Shared\\Kanban.Shared.csproj": {
+              "projectPath": "C:\\Users\\liza5\\ISALab5\\TaskManager\\Kanban.Shared\\Kanban.Shared.csproj"
             }
           }
         }
@@ -2953,6 +2902,9 @@
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
+          },
+          "Microsoft.WindowsDesktop.App.WPF": {
+            "privateAssets": "none"
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"

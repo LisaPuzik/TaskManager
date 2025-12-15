@@ -97,7 +97,6 @@
             saveButton.TabIndex = 6;
             saveButton.Text = "Сохранить";
             saveButton.UseVisualStyleBackColor = true;
-            saveButton.Click += saveButton_Click;
             // 
             // cancelButton
             // 
@@ -107,7 +106,6 @@
             cancelButton.TabIndex = 7;
             cancelButton.Text = "Отмена";
             cancelButton.UseVisualStyleBackColor = true;
-            cancelButton.Click += cancelButton_Click;
             // 
             // label4
             // 
@@ -117,7 +115,6 @@
             label4.Size = new Size(85, 20);
             label4.TabIndex = 8;
             label4.Text = "Приоритет";
-            label4.Click += label4_Click;
             // 
             // priorityComboBox
             // 
@@ -144,7 +141,6 @@
             Controls.Add(label1);
             Name = "TaskForm";
             Text = "TaskForm";
-            Load += TaskForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

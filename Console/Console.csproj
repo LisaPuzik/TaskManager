@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kanban.Entities\Kanban.Entities.csproj" />
-    <ProjectReference Include="..\Kanban.Shared\Kanban.Shared.csproj" />
+    <ProjectReference Include="..\Kanban.Presenter\Kanban.Presenter.csproj" />
   </ItemGroup>
 
 </Project>

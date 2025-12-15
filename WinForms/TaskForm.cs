@@ -1,66 +1,29 @@
-﻿using Kanban.Entities;
-using System;
-using System.Windows.Forms;
-using Task = Kanban.Entities.Task;
+﻿using System.Windows.Forms;
+using Kanban.Presenter.ViewModels;
 
 namespace WinForms
 {
     public partial class TaskForm : Form
     {
-        public string TaskTitle => titleTextBox.Text;
-        public string TaskDescription => descriptionTextBox.Text;
-        public DateTime TaskDeadLine => deadlinePicker.Value;
-        public Priority TaskPriority => (Priority)priorityComboBox.SelectedItem;
+        private readonly TaskEditorViewModel _vm;
 
-        /// <summary>
-        /// Конструктор для создания новой задачи (пустая форма).
-        /// </summary>
-        public TaskForm()
+        public TaskForm(TaskEditorViewModel vm)
         {
             InitializeComponent();
-            priorityComboBox.DataSource = Enum.GetValues(typeof(Priority));
-        }
+            _vm = vm;
 
-        /// <summary>
-        /// Конструктор для редактирования существующей задачи.
-        /// </summary>
-        /// <param name="taskToEdit">Задача, данные которой нужно загрузить в форму.</param>
-        public TaskForm(Task taskToEdit)
-        {
-            InitializeComponent();
-            priorityComboBox.DataSource = Enum.GetValues(typeof(Priority));
-            titleTextBox.Text = taskToEdit.Title;
-            descriptionTextBox.Text = taskToEdit.Description;
-            deadlinePicker.Value = taskToEdit.DeadLine;
-            priorityComboBox.SelectedItem = taskToEdit.Priority;
-        }
+            titleTextBox.DataBindings.Add("Text", _vm, nameof(_vm.Title), false, DataSourceUpdateMode.OnPropertyChanged);
+            descriptionTextBox.DataBindings.Add("Text", _vm, nameof(_vm.Description), false, DataSourceUpdateMode.OnPropertyChanged);
+            deadlinePicker.DataBindings.Add("Value", _vm, nameof(_vm.DeadLine), false, DataSourceUpdateMode.OnPropertyChanged);
 
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(titleTextBox.Text))
-            {
-                MessageBox.Show("Название задачи не может быть пустым.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            priorityComboBox.DataSource = _vm.PrioritiesListForForms;
+            priorityComboBox.DisplayMember = "Value";
+            priorityComboBox.ValueMember = "Key";
+            priorityComboBox.DataBindings.Add("SelectedValue", _vm, nameof(_vm.Priority), false, DataSourceUpdateMode.OnPropertyChanged);
+            priorityComboBox.DataBindings.Add("SelectedItem", _vm, nameof(_vm.Priority), false, DataSourceUpdateMode.OnPropertyChanged);
 
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
-
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
-
-        private void TaskForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
+            saveButton.Click += (s, e) => _vm.SaveCommand.Execute(null);
+            cancelButton.Click += (s, e) => this.Close();
         }
     }
 }

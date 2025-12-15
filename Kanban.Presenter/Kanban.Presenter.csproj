@@ -4,15 +4,14 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
+	<UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Console\Console.csproj" />
     <ProjectReference Include="..\Kanban.BL\Kanban.BL.csproj" />
     <ProjectReference Include="..\Kanban.Entities\Kanban.Entities.csproj" />
     <ProjectReference Include="..\Kanban.Shared\Kanban.Shared.csproj" />
-    <ProjectReference Include="..\WinForms\WinForms.csproj" />
   </ItemGroup>
 
 </Project>
